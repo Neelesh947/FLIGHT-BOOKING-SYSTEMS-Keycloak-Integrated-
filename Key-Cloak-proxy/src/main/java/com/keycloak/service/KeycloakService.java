@@ -14,7 +14,8 @@ public interface KeycloakService {
 
 	public LoginResponse getAccessToken(String username, String password);
 
-	public KeyCloakRepresentation createKeycloakUsersAndAssignRoles(KeyCloakRepresentation keyCloakRepresentation, String realm, String token);
+	public KeyCloakRepresentation createKeycloakUsersAndAssignRoles(KeyCloakRepresentation keyCloakRepresentation,
+			String realm, String token, String roleName);
 
 	public UserRepresentation updateKeycloakUser(UserRepresentation keyCloakRepresentation,
 			@NotNull(message = "User ID must not be null or empty") String userId,
@@ -27,14 +28,30 @@ public interface KeycloakService {
 			@NotBlank(message = "User Id must not be emtpty or blank") String userId,
 			@NotBlank(message = "Realm must not be empty or blank") String realm);
 
-	public List<KeyCloakRepresentation> getKeycloakUserByUsername(
+	public List<UserRepresentation> getKeycloakUserByUsername(
 			@NotBlank(message = "username can not be blank or empty") String username,
 			@NotBlank(message = "Realm can not be blank or empty") String realm);
 
-	public List<KeyCloakRepresentation> getKeycloakUserByEmail(
+	public List<UserRepresentation> getKeycloakUserByEmail(
 			@NotBlank(message = "Email can not be blank or empty") String email,
 			@NotBlank(message = "Realm can not be blank or empty") String realm);
 
 	public List<UserRepresentation> getKeycloakUserByRoleName(
-			@NotBlank(message = "Role Name can not be empty or blank") String roleName);
+			@NotBlank(message = "Role Name can not be empty or blank") String roleName, 
+			@NotBlank(message = "Realm must not be empty or blank") String realm);
+
+	public List<UserRepresentation> getKeyCloakUserByEmailAndRoles(
+			@NotBlank(message = "Email must not be blank or null") String email,
+			@NotBlank(message = "Role Name must not be blank or empty") String roleName,
+			@NotBlank(message = "Realm must not be empty or blank") String realm);
+
+	public List<UserRepresentation> getListOfKeycloakUserByphonenumberAndRole(
+			@NotBlank(message = "Phone must not be null or Empty") String phoneNumber,
+			@NotBlank(message = "Role must not be null or Empty") String roleName,
+			@NotBlank(message = "Realm must not be null or Empty") String realm);
+
+	public List<UserRepresentation> getKeyCloakUserByUsernameAndRoles(
+			@NotBlank(message = "Email must not be blank or null") String username,
+			@NotBlank(message = "Role Name must not be blank or empty") String roleName,
+			@NotBlank(message = "Realm must not be empty or blank") String realm);
 }

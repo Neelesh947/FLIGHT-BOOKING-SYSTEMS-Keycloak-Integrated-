@@ -1,8 +1,12 @@
 package com.keycloak.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -137,7 +141,8 @@ public class KeycloakServiceImpl implements KeycloakService{
      * @param keyCloakRepresentation The user data to be created in KEYCLOAK
      * @return The created user representation
      */
-	public KeyCloakRepresentation createKeycloakUsersAndAssignRoles(KeyCloakRepresentation keyCloakRepresentation, String realm, String token) {
+	public KeyCloakRepresentation createKeycloakUsersAndAssignRoles(KeyCloakRepresentation keyCloakRepresentation,
+			String realm, String token, String roleName) {
 		log.info("Initializing creating user...");
 		log.info("getting token..");
 		if(keyCloakRepresentation.getUsername() == null || keyCloakRepresentation.getPassword() == null
@@ -151,7 +156,8 @@ public class KeycloakServiceImpl implements KeycloakService{
 		String url = "http://localhost:8080/admin/realms/" + realm + "/users";
 		
 		UserRepresentation userRepresentation = getUserRepresentations(
-				getCredentialRepresentations(keyCloakRepresentation), keyCloakRepresentation);
+				getCredentialRepresentations(keyCloakRepresentation), keyCloakRepresentation, 
+				getUserAttributes(keyCloakRepresentation, listOfRoles(roleName)));
 		
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -180,6 +186,35 @@ public class KeycloakServiceImpl implements KeycloakService{
 	            throw new RuntimeException("Failed to create user: " + response.getStatusCode());
 	     }
 	}
+	
+	private List<String> listOfRoles(String roleName){
+		List<String> roleList = new ArrayList<>();
+		roleList.add(roleName);
+		return roleList;
+	}
+	
+	private Map<String, List<String>> getUserAttributes(KeyCloakRepresentation keyCloakRepresentation, List<String> roleList) {
+	    Map<String, List<String>> attributeList = new HashMap<>();
+	    // Add roles to the attribute list
+	    attributeList.put("roles", roleList);
+	    // Helper function to add attributes if they are not null or empty
+	    addAttribute(attributeList, "phoneNumber", keyCloakRepresentation.getPhoneNumber());
+	    addAttribute(attributeList, "companyName", keyCloakRepresentation.getCompanyName());
+	    addAttribute(attributeList, "address", keyCloakRepresentation.getAddress());
+	    addAttribute(attributeList, "city", keyCloakRepresentation.getCity());
+	    addAttribute(attributeList, "postalCode", keyCloakRepresentation.getPostalCode());
+	    addAttribute(attributeList, "state", keyCloakRepresentation.getState());
+	    addAttribute(attributeList, "country", keyCloakRepresentation.getCountry());
+	    addAttribute(attributeList, "customerSupportNumber", keyCloakRepresentation.getCustomerSupportNumber());
+	    return attributeList;
+	}
+
+	private void addAttribute(Map<String, List<String>> attributeList, String key, String value) {
+	    if (value != null && !value.isEmpty()) {
+	        attributeList.put(key, Collections.singletonList(value));
+	    }
+	}
+
 		
 	private List<CredentialRepresentation> getCredentialRepresentations(KeyCloakRepresentation keyCloakRepresentation ) {
 		List<CredentialRepresentation> credentailsList = new ArrayList<>();
@@ -192,7 +227,7 @@ public class KeycloakServiceImpl implements KeycloakService{
 	}
 	
 	private UserRepresentation getUserRepresentations(List<CredentialRepresentation> credentialsList,
-			KeyCloakRepresentation keyCloakRepresentation) {
+			KeyCloakRepresentation keyCloakRepresentation, Map<String, List<String>> atributeList) {
 		UserRepresentation userRepresentation = new UserRepresentation();
 		userRepresentation.setFirstName(keyCloakRepresentation.getFirstName());
 		userRepresentation.setLastName(keyCloakRepresentation.getLastName());
@@ -201,6 +236,7 @@ public class KeycloakServiceImpl implements KeycloakService{
 		userRepresentation.setUsername(keyCloakRepresentation.getUsername());
 		userRepresentation.setEmail(keyCloakRepresentation.getEmail());
 		userRepresentation.setCredentials(credentialsList);
+		userRepresentation.setAttributes(atributeList);
 		return userRepresentation;
 	}
 	
@@ -538,7 +574,7 @@ public class KeycloakServiceImpl implements KeycloakService{
 	 * get list of keyCloak user by userName
 	 */
 	@Override
-	public List<KeyCloakRepresentation> getKeycloakUserByUsername(
+	public List<UserRepresentation> getKeycloakUserByUsername(
 			@NotBlank(message = "username can not be blank or empty") String username,
 			@NotBlank(message = "Realm can not be blank or empty") String realm) {
 		log.info("Getting user by username: {} initiated", username);
@@ -551,8 +587,8 @@ public class KeycloakServiceImpl implements KeycloakService{
 			headers.setBearerAuth(accessToken);
 			
 			HttpEntity<String> entity = new HttpEntity<>(headers);
-			ResponseEntity<List<KeyCloakRepresentation>> response = restTemplate.exchange(
-					url, HttpMethod.GET, entity, new ParameterizedTypeReference<List<KeyCloakRepresentation>>() {});
+			ResponseEntity<List<UserRepresentation>> response = restTemplate.exchange(
+					url, HttpMethod.GET, entity, new ParameterizedTypeReference<List<UserRepresentation>>() {});
 			HttpStatusCode statusCode = response.getStatusCode(); 
 		     if(statusCode.is4xxClientError() || statusCode.is5xxServerError()) {
 		    	 String responseString = response.getBody().toString();
@@ -577,7 +613,7 @@ public class KeycloakServiceImpl implements KeycloakService{
 	 * get list of keyCloak user by email
 	 */
 	@Override
-	public List<KeyCloakRepresentation> getKeycloakUserByEmail(
+	public List<UserRepresentation> getKeycloakUserByEmail(
 			@NotBlank(message = "Email can not be blank or empty") String email,
 			@NotBlank(message = "Realm can not be blank or empty") String realm) {
 		log.info("Getting user by email: {} initiated", email);
@@ -590,8 +626,8 @@ public class KeycloakServiceImpl implements KeycloakService{
 			headers.setBearerAuth(accessToken);
 			
 			HttpEntity<String> entity = new HttpEntity<>(headers);
-			ResponseEntity<List<KeyCloakRepresentation>> response = restTemplate.exchange(
-					url, HttpMethod.GET, entity, new ParameterizedTypeReference<List<KeyCloakRepresentation>>() {});
+			ResponseEntity<List<UserRepresentation>> response = restTemplate.exchange(
+					url, HttpMethod.GET, entity, new ParameterizedTypeReference<List<UserRepresentation>>() {});
 			HttpStatusCode statusCode = response.getStatusCode(); 
 		     if(statusCode.is4xxClientError() || statusCode.is5xxServerError()) {
 		    	 String responseString = response.getBody().toString();
@@ -612,12 +648,16 @@ public class KeycloakServiceImpl implements KeycloakService{
 		}
 	}
 
+	/**
+	 * get keyCloak user by roleName
+	 */
 	@Override
 	public List<UserRepresentation> getKeycloakUserByRoleName(
-			@NotBlank(message = "Role Name can not be empty or blank") String roleName) {
+			@NotBlank(message = "Role Name can not be empty or blank") String roleName,
+			@NotBlank(message = "Realm must not be empty or blank") String realm) {
 		log.info("Finding user role...");
 		String accessToken = getAdminAccessToken();
-		String url = "http://localhost:8080/admin/realms/dev/roles/" + roleName + "/users";
+		String url = "http://localhost:8080/admin/realms/" + realm + "/roles/" + roleName + "/users";
 		
 		HttpHeaders headers= new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -642,5 +682,57 @@ public class KeycloakServiceImpl implements KeycloakService{
                     response.getStatusCode(), response.getBody());
             throw new RuntimeException("Failed to get user: " + response.getStatusCode());
 		}
+	}
+
+	/**
+     * Get KeyCloak users by email and role.
+     *
+     * @param email    The email of the user.
+     * @param roleName The role to search for.
+     * @param realm    The KeyCloak realm name.
+     * @return List of UserRepresentations.
+     */
+	@Override
+	public List<UserRepresentation> getKeyCloakUserByEmailAndRoles(
+			@NotBlank(message = "Email must not be blank or null") String email,
+			@NotBlank(message = "Role Name must not be blank or empty") String roleName,
+			@NotBlank(message = "Realm must not be empty or blank") String realm) {
+		
+		List<UserRepresentation> usersByEmail  = getKeycloakUserByEmail(email, realm);
+		List<UserRepresentation> usersByRoles = getKeycloakUserByRoleName(roleName, realm);
+		
+		Set<String> roleUserId = usersByRoles.stream()
+								.map(UserRepresentation::getId)
+								.collect(Collectors.toSet());
+		
+		List<UserRepresentation> result = usersByEmail.stream()
+								.filter(user -> roleUserId.contains(user.getId()))
+								.collect(Collectors.toList());
+		return result;
+	}
+
+	@Override
+	public List<UserRepresentation> getListOfKeycloakUserByphonenumberAndRole(
+			@NotBlank(message = "Phone must not be null or Empty") String phoneNumber,
+			@NotBlank(message = "Role must not be null or Empty") String roleName,
+			@NotBlank(message = "Realm must not be null or Empty") String realm) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<UserRepresentation> getKeyCloakUserByUsernameAndRoles(
+			@NotBlank(message = "Email must not be blank or null") String username,
+			@NotBlank(message = "Role Name must not be blank or empty") String roleName,
+			@NotBlank(message = "Realm must not be empty or blank") String realm) {
+		
+		List<UserRepresentation> usersByUsername  = getKeycloakUserByUsername(username, realm);
+		List<UserRepresentation> usersByRoles = getKeycloakUserByRoleName(roleName, realm);
+		List<UserRepresentation> filteredUsers = usersByUsername.stream()
+		        .filter(user -> usersByRoles.stream()
+		            .anyMatch(roleUser -> roleUser.getUsername().equals(user.getUsername())))
+		        .collect(Collectors.toList());
+
+		    return filteredUsers;
 	}
 }

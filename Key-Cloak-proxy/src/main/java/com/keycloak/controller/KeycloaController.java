@@ -60,7 +60,8 @@ public class KeycloaController {
 	public ResponseEntity<KeyCloakRepresentation> createKeycloakUser (@RequestBody KeyCloakRepresentation keyCloakRepresentation, 
 			@PathVariable String realm, @RequestHeader("Authorization") String token) {
 		log.info("Initiated user creation...");
-		KeyCloakRepresentation users = keycloakService.createKeycloakUsersAndAssignRoles(keyCloakRepresentation, realm, token);
+		String roleName = "admin";
+		KeyCloakRepresentation users = keycloakService.createKeycloakUsersAndAssignRoles(keyCloakRepresentation, realm, token, roleName);
 		return ResponseEntity.status(HttpStatus.CREATED).body(users);
 	}
 	
@@ -132,12 +133,12 @@ public class KeycloaController {
 	 * @return
 	 */
 	@GetMapping("user/by/{username}")
-	public ResponseEntity<List<KeyCloakRepresentation>> getKeycloakUserByUsername(
+	public ResponseEntity<List<UserRepresentation>> getKeycloakUserByUsername(
 			@NotBlank(message = "username can not be blank or empty") @PathVariable String username, 
 			@NotBlank(message = "Realm can not be blank or empty") @PathVariable String realm) {
 		log.info("getting user by username: {}", username);
 		try {
-			List<KeyCloakRepresentation> user = keycloakService.getKeycloakUserByUsername(username, realm);
+			List<UserRepresentation> user = keycloakService.getKeycloakUserByUsername(username, realm);
 			return ResponseEntity.ok(user);
 		} catch(Exception e) {
 			log.error("Error in getting username: {}", username);
@@ -152,12 +153,12 @@ public class KeycloaController {
 	 * @return
 	 */
 	@GetMapping("user/by/email/{email}")
-	public ResponseEntity<List<KeyCloakRepresentation>> getKeycloakUserByEmail(
+	public ResponseEntity<List<UserRepresentation>> getKeycloakUserByEmail(
 			@NotBlank(message = "Email can not be blank or empty") @PathVariable String email, 
 			@NotBlank(message = "Realm can not be blank or empty") @PathVariable String realm) {
 		log.info("getting user by email: {}", email);
 		try {
-			List<KeyCloakRepresentation> user = keycloakService.getKeycloakUserByEmail(email, realm);
+			List<UserRepresentation> user = keycloakService.getKeycloakUserByEmail(email, realm);
 			return ResponseEntity.ok(user);
 		} catch(Exception e) {
 			log.error("Error in getting username: {}", email);
@@ -172,11 +173,69 @@ public class KeycloaController {
 	 */
 	@GetMapping("user/by/role/{roleName}")
 	public ResponseEntity<List<UserRepresentation>> getUserByRoles(
-			@NotBlank(message = "Role Name can not be empty or blank") @PathVariable String roleName){
+			@NotBlank(message = "Role Name can not be empty or blank") @PathVariable String roleName,
+			@NotBlank(message = "Realm must not be empty or blank") @PathVariable String realm){
 		log.info("User started finding by roleName: {}",roleName);
 		try {
-			List<UserRepresentation> userList = keycloakService.getKeycloakUserByRoleName(roleName);
+			List<UserRepresentation> userList = keycloakService.getKeycloakUserByRoleName(roleName, realm);
 			return ResponseEntity.ok(userList);
+		}catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	/**
+	 * Get users by email and roles
+	 * @param email
+	 * @param roleName
+	 * @param realm
+	 * @return
+	 */
+	@GetMapping("user/by/EmailAndRole/{email}/{roleName}")
+	public ResponseEntity<List<UserRepresentation>> getUserByEmailAndRoles(
+			@NotBlank(message = "Email must not be blank or null") @PathVariable String email,
+			@NotBlank(message = "Role Name must not be blank or empty") @PathVariable String roleName,
+			@NotBlank(message = "Realm must not be empty or blank") @PathVariable String realm){
+		log.info("getting user by email: {}, role name: {} in ream: {}",email, roleName, realm);
+		try {
+			List<UserRepresentation> usersList = keycloakService.getKeyCloakUserByEmailAndRoles(email, roleName, realm);
+			return ResponseEntity.ok(usersList);
+		}catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	/**
+	 * Getting user by phone number and roles
+	 * @param phoneNumber
+	 * @param roleName
+	 * @param realm
+	 * @return
+	 */
+	@GetMapping("user/by/PhoneAndRoles/{phoneNumber}/{roleName}")
+	public ResponseEntity<List<UserRepresentation>> keycloakUserByPhoneAndRole(
+			@NotBlank(message = "Phone must not be null or Empty") @PathVariable String phoneNumber,
+			@NotBlank(message = "Role must not be null or Empty") @PathVariable String roleName,
+			@NotBlank(message = "Realm must not be null or Empty") @PathVariable String realm){
+		log.info("Started getting user by phonenumber: {} and role: {} in realm: {}", phoneNumber, roleName, realm);
+		try {
+			List<UserRepresentation> userList = keycloakService.getListOfKeycloakUserByphonenumberAndRole(
+							phoneNumber, roleName, realm);
+			return ResponseEntity.ok(userList);
+		}catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	@GetMapping("user/by/UsernameAndRole/{username}/{roleName}")
+	public ResponseEntity<List<UserRepresentation>> getUserByUsernameAndRoles(
+			@NotBlank(message = "Email must not be blank or null") @PathVariable String username,
+			@NotBlank(message = "Role Name must not be blank or empty") @PathVariable String roleName,
+			@NotBlank(message = "Realm must not be empty or blank") @PathVariable String realm){
+		log.info("getting user by email: {}, role name: {} in ream: {}",username, roleName, realm);
+		try {
+			List<UserRepresentation> usersList = keycloakService.getKeyCloakUserByUsernameAndRoles(username, roleName, realm);
+			return ResponseEntity.ok(usersList);
 		}catch (Exception e) {
 			throw e;
 		}
