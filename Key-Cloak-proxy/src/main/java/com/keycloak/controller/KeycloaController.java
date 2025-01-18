@@ -52,6 +52,22 @@ public class KeycloaController {
 	}
 	
 	/**
+	 * Logout or clear active sessions
+	 * @param userId
+	 * @param realm
+	 */
+	@PostMapping("logout/{userId}")
+	public void logoutOrClearSession(@PathVariable String userId, @PathVariable String realm) {
+		log.info("Logout initiated....");
+		try {
+			keycloakService.deleteUsersSessionsOrLogout(userId, realm);
+			log.info("Logout success for the user: {}, in realm: {}", userId, realm);
+		} catch(Exception e) {
+			throw e;
+		}
+	}
+	
+	/**
 	 * API for create users
 	 * @param keyCloakRepresentation
 	 * @return

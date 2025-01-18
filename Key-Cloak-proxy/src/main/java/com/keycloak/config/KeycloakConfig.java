@@ -29,4 +29,7 @@ public class KeycloakConfig {
 	@Value("${keycloak.client.secret}")
 	private String clientSecret;
 	
+	@Value("${keycloak.user.session.clear.URL}")
+	private String userSessionClearURL;
+	
 }

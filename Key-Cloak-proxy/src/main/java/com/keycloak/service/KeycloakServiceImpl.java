@@ -25,6 +25,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.exception.handler.ServicesInternalExceptionHandler;
+import com.exception.model.DataUnavailable;
 import com.exception.model.InternalServerError;
 import com.exception.model.InvalidRequest;
 import com.exception.model.UnauthorizedRequest;
@@ -86,8 +87,13 @@ public class KeycloakServiceImpl implements KeycloakService{
         ResponseEntity<String> response =null;
         try {	
         	response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-        } catch(Exception e) {
-        	throw servicesInternalExceptionHandler.handleException(e);
+        } catch(HttpClientErrorException  e) {
+        	if (e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                log.error("Invalid credentials for user: {}", username);
+                throw new UnauthorizedRequest(ErrorConstants.INVALID_CREDENTIALS);
+            } else {
+                throw servicesInternalExceptionHandler.handleException(e);
+            }
         } 
 
         if (response.getStatusCode() == HttpStatus.OK) {
@@ -734,5 +740,27 @@ public class KeycloakServiceImpl implements KeycloakService{
 		        .collect(Collectors.toList());
 
 		    return filteredUsers;
+	}
+	
+	public void deleteUsersSessionsOrLogout(String userId,String realm){
+		log.info("Logout endpoint called for userId: {}", userId );		
+			String accessToken = getAdminAccessToken();
+			String url = keycloakConfig.getUserSessionClearURL()
+									.replace("{0}", userId);;
+			HttpHeaders headers= new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.setBearerAuth(accessToken);
+			HttpEntity<String> entity = new HttpEntity<>(headers);			
+		try {
+			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+	        log.info("Logout successful for userId: {}, Status Code: {}", userId, response.getStatusCode());
+		} catch(HttpClientErrorException ex) {
+			log.error("Exception: {}", ex.getMessage());
+			throw new DataUnavailable(ErrorConstants.USER_NOT_FOUND);
+		} 
+		catch(Exception e) {
+			log.error("Error Occurred: {}", e);
+			throw new InternalServerError(ErrorConstants.INTERNAL_EXCEPTION);
+		}
 	}
 }

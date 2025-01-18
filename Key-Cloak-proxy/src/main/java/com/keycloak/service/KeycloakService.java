@@ -54,4 +54,6 @@ public interface KeycloakService {
 			@NotBlank(message = "Email must not be blank or null") String username,
 			@NotBlank(message = "Role Name must not be blank or empty") String roleName,
 			@NotBlank(message = "Realm must not be empty or blank") String realm);
+	
+	public void deleteUsersSessionsOrLogout(String userId,String realm);
 }
