@@ -1,19 +1,13 @@
 package com.example.demo.Entity;
 
-import com.keycloak.util.KeyCloakRepresentation;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "admin")
-public class Admin extends KeyCloakRepresentation{
+@Getter
+@Setter
+public class Admin{
 
 	private String id;
 }

@@ -1,21 +1,14 @@
 package com.example.demo.serviceImpl;
 
-import java.util.List;
 import java.util.Map;
 
-import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Entity.Admin;
-import com.example.demo.Utils.ErrorConstants;
 import com.example.demo.service.AdminService;
-import com.exception.model.DataUnavailable;
-import com.exception.model.InternalServerError;
-import com.exception.model.InvalidRequest;
-import com.keycloak.service.KeycloakService;
-import com.keycloak.util.KeyCloakRepresentation;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,39 +16,31 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class AdminServiceImpl implements AdminService{
 	
-	private String roleNameOfAdmin = "admin";
-	
-	@Autowired
-	private KeycloakService keycloakService;
+	private static final String IS_HIDDEN = "isHidden";
+	private static final String SEARCH_STRING = "searchString";
+	private static final String TRUE = "true";
+	private static final String FALSE = "false";
+	private static final String ID = "id";
+	private static final String LAST_NAME = "lastName";
+	private static final String FIRST_NAME = "firstName";
+	private static final String EMAIL = "emailId";
+	private static final String PHONE_NUMBER = "phoneNumber";
+	private static final String COUNTRY_CODE = "countryCode";
+	private static final String TELECOM_NUMBER = "telecomnumber";
+	private static final String USERNAME = "username";
+	private static final String ENABLED = "enabled";
 
 	@Override
 	public ResponseEntity<?> createAdmin(Admin admin, String roleNameOfAdmin, String realm) {
-		log.info("AdminServiceImpl: create Admin invoked for admin: {}", admin.getUsername());
-		KeyCloakRepresentation response = null;
-		validateAdmin(admin, realm);
-		try {
-			response = keycloakService.createKeycloakUsersAndAssignRoles(admin, realm, realm, roleNameOfAdmin);
-		} catch (InternalServerError e) {
-			throw new DataUnavailable(ErrorConstants.ADMIN_NOT_CREATED);
-		}
-		
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public boolean validateAdmin(Admin admin, String realm) {
-		List<UserRepresentation> existingUserWithEmailAndRolesInKeycloak = keycloakService
-				.getKeyCloakUserByEmailAndRoles(admin.getEmail(), roleNameOfAdmin, realm);	
-		if(!existingUserWithEmailAndRolesInKeycloak.isEmpty()) {
-			log.error("User already exist with same username: {}",  admin.getUsername());
-			throw new InvalidRequest(ErrorConstants.EMAIL_ALREADY_EXISTS);
-		}
-		List<UserRepresentation> existingUserWithUsernameInKeycloak = keycloakService
-				.getKeycloakUserByUsername(admin.getUsername(), realm);
-		if(!existingUserWithUsernameInKeycloak.isEmpty()) {
-			log.error("User already exist with same username: {}",  admin.getUsername());
-			throw new InvalidRequest(ErrorConstants.USERNAME_ALREADY_EXIST);
-		}
-		return true;
+	@Override
+	public Page<Map<String, Object>> fetchAdminList(Map<String, Object> allParams, Pageable pageable,
+			String rolenameofadmin, String realm) {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
+
 }

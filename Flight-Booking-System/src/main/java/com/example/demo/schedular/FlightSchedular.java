@@ -18,8 +18,8 @@ public class FlightSchedular {
 	@Autowired
 	private FlightRepository flightRepository;
 	
-	@Transactional
-	@Scheduled(fixedRate = 60000)
+//	@Transactional
+//	@Scheduled(fixedRate = 60000)
 	public void deleteDeparturedFlight() {
 		log.info("Cron job started");
 		LocalDateTime time=LocalDateTime.now();
