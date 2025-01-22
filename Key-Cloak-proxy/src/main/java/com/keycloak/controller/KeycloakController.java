@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,11 +26,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/{realm}/")
-public class KeycloaController {
+public class KeycloakController {
 
 	private final KeycloakService keycloakService;
 	
-	public KeycloaController(KeycloakService keycloakService) {
+	public KeycloakController(KeycloakService keycloakService) {
 		this.keycloakService = keycloakService;
 	}
 	
@@ -72,12 +71,11 @@ public class KeycloaController {
 	 * @param keyCloakRepresentation
 	 * @return
 	 */
-	@PostMapping("create-user")
+	@PostMapping("create-user/{role}")
 	public ResponseEntity<KeyCloakRepresentation> createKeycloakUser (@RequestBody KeyCloakRepresentation keyCloakRepresentation, 
-			@PathVariable String realm, @RequestHeader("Authorization") String token) {
+			@PathVariable String realm, @PathVariable String role) {
 		log.info("Initiated user creation...");
-		String roleName = "admin";
-		KeyCloakRepresentation users = keycloakService.createKeycloakUsersAndAssignRoles(keyCloakRepresentation, realm, token, roleName);
+		KeyCloakRepresentation users = keycloakService.createKeycloakUsersAndAssignRoles(keyCloakRepresentation, realm, role);
 		return ResponseEntity.status(HttpStatus.CREATED).body(users);
 	}
 	

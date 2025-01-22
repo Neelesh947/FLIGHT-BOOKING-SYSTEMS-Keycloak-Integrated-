@@ -14,9 +14,6 @@ public interface KeycloakService {
 
 	public LoginResponse getAccessToken(String username, String password);
 
-	public KeyCloakRepresentation createKeycloakUsersAndAssignRoles(KeyCloakRepresentation keyCloakRepresentation,
-			String realm, String token, String roleName);
-
 	public UserRepresentation updateKeycloakUser(UserRepresentation keyCloakRepresentation,
 			@NotNull(message = "User ID must not be null or empty") String userId,
 			@NotNull(message = "Realm must not be null or empty") String realm);
@@ -56,4 +53,7 @@ public interface KeycloakService {
 			@NotBlank(message = "Realm must not be empty or blank") String realm);
 	
 	public void deleteUsersSessionsOrLogout(String userId,String realm);
+
+	public KeyCloakRepresentation createKeycloakUsersAndAssignRoles(KeyCloakRepresentation keyCloakRepresentation,
+			String realm, String role);
 }

@@ -23,6 +23,7 @@ import com.example.demo.Utils.ErrorConstants;
 import com.example.demo.Utils.KeycloakUtility;
 import com.example.demo.service.AdminService;
 import com.exception.model.DataUnavailable;
+import com.exception.model.InternalServerError;
 import com.exception.model.InvalidRequest;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,13 +54,13 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public ResponseEntity<?> createAdmin(Admin admin, String roleNameOfAdmin, String realm) {
 		log.info("AdminServiceImpl: create Admin invoked for admin: {}", admin.getUsername());
-//		KeyCloakRepresentation response = null;
-//		validateAdmin(admin, realm);
-//		try {
-//			response = keycloakService.createKeycloakUsersAndAssignRoles(admin, realm, realm, roleNameOfAdmin);
-//		} catch (InternalServerError e) {
-//			throw new DataUnavailable(Constants.ADMIN_NOT_CREATED);
-//		}
+		Map<String, String> response = null;
+		validateAdmin(admin, realm);
+		try {
+			response = keycloakUtility.createUser(admin, roleNameOfAdmin, realm);
+		} catch (InternalServerError e) {
+			throw new DataUnavailable(ErrorConstants.ADMIN_NOT_CREATED);
+		}
 		return null;
 	}
 

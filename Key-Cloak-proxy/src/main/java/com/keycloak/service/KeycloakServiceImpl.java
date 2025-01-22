@@ -148,15 +148,13 @@ public class KeycloakServiceImpl implements KeycloakService{
      * @return The created user representation
      */
 	public KeyCloakRepresentation createKeycloakUsersAndAssignRoles(KeyCloakRepresentation keyCloakRepresentation,
-			String realm, String token, String roleName) {
+			String realm, String roleName) {
 		log.info("Initializing creating user...");
 		log.info("getting token..");
 		if(keyCloakRepresentation.getUsername() == null || keyCloakRepresentation.getPassword() == null
 				|| keyCloakRepresentation.getPhoneNumber() == null) {
 			throw new InvalidRequest(ErrorConstants.DATA_IS_MISSING);
 		}
-		List<String> rolesFromToken = getRolesFromToken(token);
-		log.info("Roles list: {}", rolesFromToken);
 		String accessToken = getAdminAccessToken();
 		log.info("access token: {}" ,accessToken);
 		String url = "http://localhost:8080/admin/realms/" + realm + "/users";
@@ -184,13 +182,34 @@ public class KeycloakServiceImpl implements KeycloakService{
 	            log.info("User successfully created in Keycloak.");
 	            String userId = getUserId(keyCloakRepresentation.getUsername(), realm);	            
 	            log.info("Extracted user ID: {}", userId);
-	            asignRoleToTheUsers(realm, userId, rolesFromToken);
+	            ResponseEntity<RoleRepresentation> roles = getRoles(roleName, realm);
+	            String roleGet = roles.getBody().getName();
+	            String roleId = roles.getBody().getId();
+	            asignRoleToTheUsers(realm, userId, roleGet, roleId);
 	            return keyCloakRepresentation;
 	     } else {
 	            log.error("Failed to create user. Status code: {}. Response: {}", 
 	                         response.getStatusCode(), response.getBody());
 	            throw new RuntimeException("Failed to create user: " + response.getStatusCode());
 	     }
+	}
+	
+	private ResponseEntity<RoleRepresentation>  getRoles(String role, String realm) {
+		String accessToken = getAdminAccessToken();
+		String url = "http://localhost:8080/admin/realms/"+ realm + "/roles/" + role;
+		
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+		httpHeaders.setBearerAuth(accessToken);
+		
+		HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
+		try {
+			return restTemplate.exchange(url, HttpMethod.GET, entity, 
+							new ParameterizedTypeReference<RoleRepresentation>() {
+							});			
+		} catch(Exception e) {
+			throw new DataUnavailable(ErrorConstants.ROLE_NOT_FOUND);
+		}
 	}
 	
 	private List<String> listOfRoles(String roleName){
@@ -350,42 +369,20 @@ public class KeycloakServiceImpl implements KeycloakService{
 	/**
 	 * Assign role to the desired user
 	 */
-	private void asignRoleToTheUsers(String realm, String userId, List<String> roles) {
+	private ResponseEntity<Object> asignRoleToTheUsers(String realm, String userId, String roles, String roleId) {
 		try {
 			String accessToken = getAdminAccessToken();
 			String url = "http://localhost:8080/admin/realms/" + realm + "/users/" + userId + "/role-mappings/realm";
-			
-			List<RoleRepresentation> roleMappings = new ArrayList<>();	
-			for(String roleName : roles) {
-				switch (roleName) {
-					case "super_admin":
-							roleMappings.add(createRoleMapping("admin"));
-							break;
-					case "admin":
-							roleMappings.add(createRoleMapping("customer_support"));
-							roleMappings.add(createRoleMapping("flight_operations_manager"));
-							roleMappings.add(createRoleMapping("marketing_manager"));
-							roleMappings.add(createRoleMapping("it_support"));
-							roleMappings.add(createRoleMapping("payment_processor"));
-							break;
-					case "customer_support":
-							roleMappings.add(createRoleMapping("travel_agent"));
-							roleMappings.add(createRoleMapping("User"));
-							break;
-					case "default-roles-dev":
-							break;
-					default:
-	                    log.info("Unknown role: " + roleName);		
-				}
-			}
 			HttpHeaders headers = new HttpHeaders();
 	        headers.setContentType(MediaType.APPLICATION_JSON);
 	        headers.setBearerAuth(accessToken);
-	        HttpEntity<List<RoleRepresentation>> entity = new HttpEntity<>(roleMappings, headers);
+	        String roleAssignmentJson = "[{\"id\": \"" + roleId + "\", \"name\": \"" + roles + "\"}]";
+	        HttpEntity<String> entity = new HttpEntity<>(roleAssignmentJson, headers);
 			
 			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
 			if (response.getStatusCode() == HttpStatus.NO_CONTENT) {
 	            log.info("Roles successfully assigned to user '{}'", userId);
+	            return new ResponseEntity<Object>(HttpStatus.OK);
 	        } else {
 	            log.error("Failed to assign roles to user '{}'. Status code: {}. Response: {}", userId, response.getStatusCode(), response.getBody());
 	            throw new RuntimeException("Failed to assign roles to user");

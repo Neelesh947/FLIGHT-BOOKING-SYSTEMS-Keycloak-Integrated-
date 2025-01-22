@@ -15,4 +15,6 @@ public class ErrorConstants {
 	public static final String INTERNAL_SERVER_ERROR = "Some exception occurred";
 	
 	public static final String NO_DATA_FOUND = "No data found";
+	
+	public static final String USER_CREATED = "User created";
 }
