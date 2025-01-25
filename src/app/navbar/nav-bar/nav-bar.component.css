@@ -1,0 +1,74 @@
+.example-container {
+    height: 100%;
+    display: flex;
+  }
+  
+mat-sidenav {
+    width: 150px;
+    background-color: blue;
+    color: white;
+}
+  
+mat-sidenav-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo img{
+    width: 100%;
+    height: auto;
+}
+
+.mat-toolbar {
+    background-color: #3f51b5;
+    color: white;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 200px;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.header .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+  
+.header .user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.header .user-role {
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+}
+ 
+.header .user-position {
+    font-size: 14px;
+    color: black;
+}
+
+.header .logout {
+    font-size: 18px;
+    color: #007bff;
+    cursor: pointer;
+}
+  
+.mat-toolbar{
+    background-color: #ccc;
+}

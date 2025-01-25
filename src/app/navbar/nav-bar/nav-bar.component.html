@@ -1,0 +1,44 @@
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=logout" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+  
+  <mat-sidenav-container class="example-container">
+    <!-- Side Navbar -->
+    <mat-sidenav #sidenav mode="side" opened>
+      <mat-nav-list>
+        <div class="logo">
+            <img src="../../../assets/logo.jpg" alt="Logo" />
+        </div>
+        <li *ngIf="role.includes('super_admin')">
+            <a mat-list-item  [routerLink]="'admin-list'">Admin</a>
+        </li>
+        <li *ngIf="role.includes('super_admin')">
+            <a mat-list-item  href="#">Questions</a>
+        </li>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <!-- Main content area with Toolbar -->
+    <mat-sidenav-content>
+      <mat-toolbar>
+        <div class="main-content">
+          <div class="header">
+            <div class="user-info">
+              <div class="user-details">
+                <span class="user-role">{{this.name}}</span>
+                <span class="user-position">{{this.role}}</span>
+              </div>
+              <i (click)="logout()">
+                <span class="material-symbols-outlined">
+                  logout
+                </span>
+              </i>
+            </div>
+          </div>
+        </div>
+      </mat-toolbar>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

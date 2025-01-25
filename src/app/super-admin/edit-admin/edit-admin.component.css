@@ -1,0 +1,35 @@
+.heading {
+    margin-top: 2%;
+    margin-left: 2%;
+}
+
+.width100 {
+    width: 100%;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1px;
+}
+
+.form-label {
+    flex: 1; /* label takes up remaining space */
+    text-align: left;
+    padding-right: 20px; /* adds space between label and field */
+    font-size: 15px;
+}
+
+.form-field {
+    flex: 2; /* form field takes up more space */
+    margin-left: -120px;
+    margin-right: 450px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* space between buttons */
+    margin-top: 20px;
+    margin-right: 500px;
+}

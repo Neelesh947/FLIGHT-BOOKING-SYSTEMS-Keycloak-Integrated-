@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Flight Service Login</title>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <img src="../assets/logo.jpg" alt="Logo" class="logo">
+            <img src="../assets/flight.jpg" alt="Flight Image" class="flight-image">
+        </div>
+
+        <!-- Sign In Section -->
+        <div class="sign-in-container">
+            <h1 sty>Sign in to your account</h1>
+            <div *ngIf="errorMessage" class="error-messages">
+                <p>{{ errorMessage }}</p>
+            </div>
+            <form class="sign-in" (ngSubmit)="formSubmit()">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input [(ngModel)] = "loginData.username"
+                    type="text" id="username" name="username" placeholder="Enter your username" 
+                    required #username="ngModel">
+                    <div *ngIf="username.touched && username.invalid" class="error-message">
+                        <small *ngIf="username.errors?.['required']">Username is required</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input [(ngModel)] = "loginData.password"
+                    type="password" id="password" name="password" placeholder="Enter your password" 
+                    required #password="ngModel">
+                    <div *ngIf="password.touched && password.invalid" class="error-message">
+                        <small *ngIf="password.errors?.['required']">Password is required</small>
+                    </div>
+                </div>
+                <div class="forgot-password">
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit">Sign In</button>
+            </form>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="footer">
+            <p><span>FlightService™ &copy; 2025.</span> Flight Management Service</p>
+            <p>Contact us at: neeleshkumarm98&#64;gmail.com</p>
+        </div>
+    </div>
+</body>
+
+</html>
