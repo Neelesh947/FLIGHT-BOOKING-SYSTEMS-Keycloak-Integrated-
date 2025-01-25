@@ -2,6 +2,7 @@ package com.example.demo.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,12 +16,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Entity.Admin;
 import com.example.demo.Utils.ErrorConstants;
 import com.example.demo.Utils.KeycloakUtility;
+import com.example.demo.config.Constants;
 import com.example.demo.service.AdminService;
 import com.exception.model.DataUnavailable;
 import com.exception.model.InternalServerError;
@@ -54,14 +57,19 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public ResponseEntity<?> createAdmin(Admin admin, String roleNameOfAdmin, String realm) {
 		log.info("AdminServiceImpl: create Admin invoked for admin: {}", admin.getUsername());
-		Map<String, String> response = null;
+		Map<String, String> responseEntity = null;
+		Map<String, Object> responseMap = new HashMap<>();
 		validateAdmin(admin, realm);
 		try {
-			response = keycloakUtility.createUser(admin, roleNameOfAdmin, realm);
+			responseEntity = keycloakUtility.createUser(admin, roleNameOfAdmin, realm);
 		} catch (InternalServerError e) {
 			throw new DataUnavailable(ErrorConstants.ADMIN_NOT_CREATED);
 		}
-		return null;
+		String adminId = responseEntity.get("userId");
+		responseMap.put(Constants.STATUS, Constants.SUCCESS);
+		responseMap.put("admin-id", adminId);
+		responseMap.put(USERNAME, admin.getUsername());
+		return new ResponseEntity<Object>(responseMap, HttpStatus.OK);
 	}
 
 	@Override
@@ -103,7 +111,9 @@ public class AdminServiceImpl implements AdminService{
 		if(allParams.containsKey(IS_HIDDEN) &&  !allParams.containsKey(SEARCH_STRING)) {
 			sortedList = allParams.get(IS_HIDDEN).equals(TRUE) ? sortedList.stream()
 					.filter(UserRepresentation -> UserRepresentation.isEnabled().booleanValue() == true)
-					.collect(Collectors.toList()) : sortedList ;
+					.collect(Collectors.toList()) : sortedList.stream()
+					.filter(UserRepresentation -> UserRepresentation.isEnabled().booleanValue() == false)
+					.collect(Collectors.toList());
 		}
 		if(sortedList != null && !sortedList.isEmpty()) {
 			List<Map<String, Object>> allAdminList = new LinkedList<Map<String, Object>>();

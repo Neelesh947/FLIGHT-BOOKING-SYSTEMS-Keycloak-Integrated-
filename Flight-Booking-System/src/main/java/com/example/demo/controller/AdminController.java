@@ -40,6 +40,12 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 
+	/**
+	 * Create Admin
+	 * @param admin
+	 * @param realm
+	 * @return
+	 */
 	@PostMapping("/create-admin")
 	public ResponseEntity<?> createAdmin(@RequestBody Admin admin, @PathVariable String realm){
 		log.info("Create admin");
@@ -51,6 +57,13 @@ public class AdminController {
 		}
 	}
 	
+	/**
+	 * Fetch all Admin for a specific all param
+	 * @param allParams
+	 * @param page able
+	 * @param realm
+	 * @return
+	 */
 	@GetMapping("/get-admin-list")
 	public ResponseEntity<?> getListOfAdmins(@RequestParam Map<String, Object> allParams,
 			Pageable pageable, @PathVariable String realm){
@@ -69,6 +82,13 @@ public class AdminController {
         }
 	}
 	
+	/**
+	 * update status : - inactive and active
+	 * @param status
+	 * @param adminId
+	 * @param realm
+	 * @return
+	 */
 	@PatchMapping("/updateStatus/{id}")
 	public ResponseEntity<?> updateAdminStatus(@RequestBody Map<String, Object> status, 
 			@PathVariable("id") String adminId, @PathVariable String realm) {
