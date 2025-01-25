@@ -145,4 +145,16 @@ public class AdminServiceImpl implements AdminService{
 		}
 		return new PageImpl<>(new ArrayList<Map<String, Object>>(), page, 0);
 	}
+
+	@Override
+	public String updateAdminStatus(Map<String, Object> status, String adminId, String realm) {
+		UserRepresentation userResponse = keycloakUtility.userById(adminId, realm);
+		if(userResponse == null) {
+			throw new DataUnavailable(ErrorConstants.NO_DATA_FOUND);
+		}
+		boolean noStatus = (boolean) status.get(ENABLED);
+		userResponse.setEnabled(noStatus);
+		keycloakUtility.updateUser(userResponse, userResponse.getId(), realm);
+		return TRUE;
+	}
 }

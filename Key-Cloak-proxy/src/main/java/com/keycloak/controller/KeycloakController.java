@@ -241,6 +241,13 @@ public class KeycloakController {
 		}
 	}
 	
+	/**
+	 * Get user by usreName and roles
+	 * @param userName
+	 * @param roleName
+	 * @param realm
+	 * @return
+	 */
 	@GetMapping("user/by/UsernameAndRole/{username}/{roleName}")
 	public ResponseEntity<List<UserRepresentation>> getUserByUsernameAndRoles(
 			@NotBlank(message = "Email must not be blank or null") @PathVariable String username,
@@ -251,6 +258,25 @@ public class KeycloakController {
 			List<UserRepresentation> usersList = keycloakService.getKeyCloakUserByUsernameAndRoles(username, roleName, realm);
 			return ResponseEntity.ok(usersList);
 		}catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	/**
+	 * Activate and Deactivate Key-cloak users.
+	 * @param userId
+	 * @param Realm
+	 * @return
+	 */
+	@PutMapping("enableDisable/{userId}")
+	public ResponseEntity<UserRepresentation> activateDeactivateUser(@RequestBody String status,
+			@NotBlank(message = "User Id must not be blank or null") @PathVariable String userId,
+			@NotBlank(message = "realm must not be blank or null") @PathVariable String realm) {
+		log.info("Enable and Dissable method invoked");
+		try {
+			UserRepresentation user = keycloakService.enableOrDissableKeycloakUser(userId, realm, status);
+			return ResponseEntity.status(HttpStatus.OK).body(user);
+		} catch (Exception e) {
 			throw e;
 		}
 	}

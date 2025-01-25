@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Entity.Admin;
 import com.example.demo.Utils.ErrorConstants;
+import com.example.demo.config.Constants;
 import com.example.demo.service.AdminService;
 import com.exception.model.InternalServerError;
 
@@ -27,6 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/{realm}/admin")
 public class AdminController {
+	
+	private static final String SUCCESSFULLY_UPDATED = "successfully updated";
+	private static final String TRUE = "true";
 	
 	@Value(value = "${keycloak.security-constraints[0].authRoles[0]}")
 	private String roleNameOfAdmin;
@@ -61,5 +67,19 @@ public class AdminController {
             log.error("Error while fetching admin list: {}", e.getMessage(), e);
             throw new InternalServerError(ErrorConstants.INTERNAL_SERVER_ERROR);
         }
+	}
+	
+	@PatchMapping("/updateStatus/{id}")
+	public ResponseEntity<?> updateAdminStatus(@RequestBody Map<String, Object> status, 
+			@PathVariable("id") String adminId, @PathVariable String realm) {
+		log.info("Invoked updateAdminStatus for Admin {} with request body: {}", adminId, status.toString());
+		String response = adminService.updateAdminStatus(status, adminId, realm);
+		Map<String, Object> resMap = new HashMap<>();
+		if(response.equals(TRUE)) {
+			resMap.put(Constants.STATUS, Constants.SUCCESS);
+			resMap.put(Constants.MESSAGE, SUCCESSFULLY_UPDATED);
+			return new ResponseEntity<>(resMap, HttpStatus.OK);
+		}
+		return null;
 	}
 }

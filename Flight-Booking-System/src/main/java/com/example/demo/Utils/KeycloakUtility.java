@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -88,5 +86,28 @@ public class KeycloakUtility {
 			throw new InternalServerError(ErrorConstants.INTERNAL_SERVER_ERROR);
 		}
 		return null;
+	}
+	
+	public UserRepresentation userById(String userId, String realm) {
+		String url = KEYCLOAK_URL + "/" + realm + "/user/" + userId;
+		try {
+			ResponseEntity<UserRepresentation> response = restTemplate.exchange(url, HttpMethod.GET,
+					null, UserRepresentation.class);
+			return response.getBody();
+		} catch(Exception e) {
+			log.error("Exception occurred", e);
+			throw new InternalServerError(e.getMessage());
+		}
+	}
+
+	public void updateUser(UserRepresentation userResponse, String userId, String realm) {
+		String url = KEYCLOAK_URL + "/" + realm + "/update/user/" + userId;
+		HttpEntity<UserRepresentation> entity = new HttpEntity<>(userResponse);
+		try {
+			restTemplate.exchange(url, HttpMethod.PUT, entity, UserRepresentation.class);
+		} catch (Exception e) {
+			log.error("Exception occurred", e);
+			throw new InternalServerError(e.getMessage());
+		}
 	}
 }

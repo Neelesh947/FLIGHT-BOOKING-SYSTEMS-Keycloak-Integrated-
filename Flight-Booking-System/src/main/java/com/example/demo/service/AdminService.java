@@ -15,4 +15,6 @@ public interface AdminService {
 	Page<Map<String, Object>> fetchAdminList(Map<String, Object> allParams, Pageable pageable, String rolenameofadmin,
 			String realm);
 
+	String updateAdminStatus(Map<String, Object> status, String adminId, String realm);
+
 }

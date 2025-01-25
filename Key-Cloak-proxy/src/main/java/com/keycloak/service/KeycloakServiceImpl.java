@@ -760,4 +760,36 @@ public class KeycloakServiceImpl implements KeycloakService{
 			throw new InternalServerError(ErrorConstants.INTERNAL_EXCEPTION);
 		}
 	}
+
+	@Override
+	public UserRepresentation enableOrDissableKeycloakUser(
+			@NotBlank(message = "User Id must not be blank or null") String userId,
+			@NotBlank(message = "realm must not be blank or null") String realm, String status) {
+		log.info("Enable or Dissable Enpoint hits for userId: {}", userId);
+		boolean enabledStatus = Boolean.parseBoolean(status);
+		String accessToken = getAdminAccessToken();
+		String url = "http://localhost:8080/admin/realms/" + realm + "/users/" + userId;
+		try {
+			String body = "{\"enabled\": " + enabledStatus + "}";
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.setBasicAuth(accessToken);
+			HttpEntity<String> entity = new HttpEntity<>(body,headers);
+		
+			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
+			if(response.getStatusCode() == HttpStatus.NO_CONTENT) {
+				log.info("User status updated successfully. UserId: {}", userId);
+				return null;
+			} else {
+				log.error("Unexpected response: {}", response.getStatusCode());
+				throw new InternalServerError(ErrorConstants.INTERNAL_EXCEPTION);
+			}
+		} catch(HttpClientErrorException e) {
+			log.error("Exception: {}", e);
+			throw new InternalServerError(ErrorConstants.INTERNAL_EXCEPTION);
+		} catch (Exception e) {
+			log.error("Some Exception Occurrer", e);
+			throw new InternalServerError(ErrorConstants.INTERNAL_EXCEPTION);
+		}
+	}
 }

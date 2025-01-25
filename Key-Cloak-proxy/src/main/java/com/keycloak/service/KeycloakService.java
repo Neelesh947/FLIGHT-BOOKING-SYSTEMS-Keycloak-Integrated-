@@ -56,4 +56,8 @@ public interface KeycloakService {
 
 	public KeyCloakRepresentation createKeycloakUsersAndAssignRoles(KeyCloakRepresentation keyCloakRepresentation,
 			String realm, String role);
+
+	public UserRepresentation enableOrDissableKeycloakUser( 
+			@NotBlank(message = "User Id must not be blank or null") String userId,
+			@NotBlank(message = "realm must not be blank or null") String realm, String status);
 }
