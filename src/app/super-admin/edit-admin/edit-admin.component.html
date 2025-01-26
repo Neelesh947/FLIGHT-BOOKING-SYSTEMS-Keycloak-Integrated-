@@ -62,26 +62,6 @@
                             </div>
                         </div>
 
-                        <!-- Password Field -->
-                        <div class="form-row">
-                            <div class="form-label">
-                                <mat-label>Password</mat-label>
-                            </div>
-                            <div class="form-field">
-                                <mat-form-field appearance="outline" class="width100">
-                                    <input matInput 
-                                           [(ngModel)]="admin.password"
-                                           name="password"
-                                           required
-                                           placeholder="Password" 
-                                           type="password">
-                                    <mat-error *ngIf="adminForm.submitted && !admin.password">
-                                        Password is required.
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                        </div>
-
                         <!-- Customer Support Number -->
                         <div class="form-row">
                             <div class="form-label">
@@ -90,7 +70,7 @@
                             <div class="form-field">
                                 <mat-form-field appearance="outline" class="width100">
                                     <input matInput 
-                                           [(ngModel)]="admin.customerSupportNumber"
+                                           [(ngModel)]="admin.telecomnumber"
                                            name="customerSupportNumber"
                                            required
                                            placeholder="Customer Support Number">
@@ -109,7 +89,7 @@
                             <div class="form-field">
                                 <mat-form-field appearance="outline" class="width100">
                                     <input matInput 
-                                           [(ngModel)]="admin.email"
+                                           [(ngModel)]="admin.emailId"
                                            name="email"
                                            required
                                            placeholder="Email ID"
@@ -241,7 +221,7 @@
                             <button mat-button color="warn" type="button" routerLink="/navbar/admin-list">
                                 Cancel
                             </button>
-                            <button mat-raised-button color="primary" type="submit" [disabled]="!adminForm.valid">Add Admin</button>
+                            <button mat-raised-button color="primary" type="submit" [disabled]="!adminForm.valid">Update Admin</button>
                         </div>
                     </form>
                 </div>

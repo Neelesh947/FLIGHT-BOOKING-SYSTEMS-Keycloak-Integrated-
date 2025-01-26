@@ -25,6 +25,11 @@ import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { EditAdminComponent } from './super-admin/edit-admin/edit-admin.component';
+import { CustomerSupportRepresentativeComponent } from './admin/customer-support-representative/customer-support-representative.component';
+import { FlightOperationManagerComponent } from './admin/flight-operation-manager/flight-operation-manager.component';
+import { MarketingManagerComponent } from './admin/marketing-manager/marketing-manager.component';
+import { ItSupportDeveloperComponent } from './admin/it-support-developer/it-support-developer.component';
+import { PaymentProcessorComponent } from './admin/payment-processor/payment-processor.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +40,12 @@ import { EditAdminComponent } from './super-admin/edit-admin/edit-admin.componen
     AddAdminComponent,
     QuestionListComponent,
     AddQuestionComponent,
-    EditAdminComponent
+    EditAdminComponent,
+    CustomerSupportRepresentativeComponent,
+    FlightOperationManagerComponent,
+    MarketingManagerComponent,
+    ItSupportDeveloperComponent,
+    PaymentProcessorComponent
   ],
   imports: [
     BrowserModule,

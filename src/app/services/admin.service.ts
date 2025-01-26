@@ -8,6 +8,11 @@ export class AdminService {
 
   constructor(private http:HttpClient) { }
 
+public getAdminById(adminId: string){
+  return this.http.get(`http://localhost:8082/dev/admin/${adminId}`);
+}
+  
+
   //get list of admins
 public getListOfAdmins(page: number, size: number, isHidden?: boolean){
   let  params = new HttpParams()
@@ -38,5 +43,10 @@ public enableAdmin(adminId: string) {
   //create admins
   public createAdmin(adminData:any) {
     return this.http.post("http://localhost:8081/dev/create-user/admin", adminData);
+  }
+
+  public updateAdmin(adminId: string, admin:any){
+    const url = `http://localhost:8082/dev/admin/${adminId}`;
+    return this.http.patch(url,admin);
   }
 }

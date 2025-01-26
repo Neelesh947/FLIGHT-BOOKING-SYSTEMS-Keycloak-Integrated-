@@ -7,6 +7,8 @@ mat-sidenav {
     width: 150px;
     background-color: blue;
     color: white;
+    padding: 10px; /* Optional padding for aesthetics */
+    box-sizing: border-box;
 }
   
 mat-sidenav-content {
@@ -71,4 +73,16 @@ mat-sidenav-content {
   
 .mat-toolbar{
     background-color: #ccc;
+}
+
+.logout-icon{
+    cursor: pointer;
+}
+
+mat-nav-list a {
+    word-wrap: break-word; /* Ensure long words wrap */
+    white-space: normal;   /* Allow the text to wrap normally */
+    overflow-wrap: break-word; /* Ensure words break within the boundaries */
+    display: block; /* Ensures the link is treated as a block element */
+    padding: 5px 0; /* Add padding for better spacing */
 }

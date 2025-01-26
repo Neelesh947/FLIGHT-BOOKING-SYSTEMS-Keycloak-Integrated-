@@ -10,12 +10,36 @@
         <div class="logo">
             <img src="../../../assets/logo.jpg" alt="Logo" />
         </div>
+        <!-----------------role = super_admin--------------->
         <li *ngIf="role.includes('super_admin')">
             <a mat-list-item  [routerLink]="'admin-list'">Admin</a>
         </li>
         <li *ngIf="role.includes('super_admin')">
             <a mat-list-item  href="#">Questions</a>
         </li>
+        <!------------------role = admin-------------------->
+        <li *ngIf="role.includes('admin')">
+          <a mat-list-item  >Flight Operation</a>
+        </li>
+        <li *ngIf="role.includes('admin')">
+          <a mat-list-item  >Customer Support</a>
+        </li>
+        <li *ngIf="role.includes('admin')">
+          <a mat-list-item  >Marketing Manager</a>
+        </li>
+        <li *ngIf="role.includes('admin')">
+          <a mat-list-item  >Support/Developer</a>
+        </li>
+        <li *ngIf="role.includes('admin')">
+          <a mat-list-item  >Payment Processor</a>
+        </li>
+        <!------------------role = flight_operations_manager----------------->
+        <!------------------role = customer_support-------------->
+        <!------------------role = it_support-------------------->
+        <!------------------role = marketing_manager-------------------------->
+        <!------------------role = payment_processor-------------------------------->
+        <!------------------role = travel_agent------------------------------->
+        <!------------------role = User--------------------------->
       </mat-nav-list>
     </mat-sidenav>
   
@@ -29,7 +53,7 @@
                 <span class="user-role">{{this.name}}</span>
                 <span class="user-position">{{this.role}}</span>
               </div>
-              <i (click)="logout()">
+              <i (click)="logout()" class="logout-icon">
                 <span class="material-symbols-outlined">
                   logout
                 </span>
