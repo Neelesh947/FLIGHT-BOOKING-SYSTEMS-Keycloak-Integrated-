@@ -17,4 +17,8 @@ public interface AdminService {
 
 	String updateAdminStatus(Map<String, Object> status, String adminId, String realm);
 
+	Map<String, Object> getUserById(String id, String realm);
+
+	ResponseEntity<?> updateAdmins(Admin admin, String adminId, String realm);
+
 }

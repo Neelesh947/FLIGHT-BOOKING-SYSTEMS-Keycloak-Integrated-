@@ -110,4 +110,17 @@ public class KeycloakUtility {
 			throw new InternalServerError(e.getMessage());
 		}
 	}
+
+	public List<UserRepresentation> usersByPhoneAndRole(String phoneNumber, String roleNameOfAdmin, String realm) {
+		String url = KEYCLOAK_URL + "/" + realm + "/user/by/PhoneAndRoles/" + phoneNumber + "/" + roleNameOfAdmin;
+		try {
+			ResponseEntity<List<UserRepresentation>> response = restTemplate.exchange(url, HttpMethod.GET, null,
+					new ParameterizedTypeReference<List<UserRepresentation>>() {
+				});
+			return response.getBody();
+		} catch (Exception e) {
+			log.error("Exception occurred", e);
+			throw new InternalServerError(e.getMessage());
+		}
+	}
 }

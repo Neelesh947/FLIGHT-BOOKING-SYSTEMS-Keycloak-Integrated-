@@ -102,4 +102,37 @@ public class AdminController {
 		}
 		return null;
 	}
+	
+	/**
+	 * Get Admin by ID
+	 * @param id
+	 * @param realm
+	 * @return
+	 */
+	@GetMapping("/{id}")
+	public ResponseEntity<Map<String, Object>> getAdminById(@PathVariable String id, @PathVariable String realm){
+		log.info("Get admin by id invoked: {}", id);
+		Map<String, Object> admin = adminService.getUserById(id,realm);
+		return ResponseEntity.status(HttpStatus.OK).body(admin);
+	}
+	
+	/**
+	 * Update Admins
+	 * @param admin
+	 * @param adminId
+	 * @param realm
+	 * @return
+	 */
+	@PatchMapping("/{adminId}")
+	public ResponseEntity<?> updateAdmin(@RequestBody Admin admin, @PathVariable String adminId, @PathVariable String realm) {
+		log.info("Invoked update admin with admin id: {}", adminId);
+		ResponseEntity<?> updateAdmin = adminService.updateAdmins(admin, adminId, realm);
+		Map<String, Object> resMap = new HashMap<>();
+		if(updateAdmin != null) {
+			resMap.put(Constants.STATUS, Constants.SUCCESS);
+			resMap.put(Constants.MESSAGE, SUCCESSFULLY_UPDATED);
+			return new ResponseEntity<>(resMap, HttpStatus.OK);
+		}
+		return null;
+	}
 }

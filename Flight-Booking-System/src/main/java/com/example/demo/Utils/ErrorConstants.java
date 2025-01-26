@@ -17,4 +17,12 @@ public class ErrorConstants {
 	public static final String NO_DATA_FOUND = "No data found";
 	
 	public static final String USER_CREATED = "User created";
+	
+	public static final String ADMIN_NOT_FOUND = "Admin not found";
+	
+	public static final String USER_EXIST_WITH_PHONE_NUMBER = "User already exist with same phone number";
+	
+	public static final String INVALID_PHONE_NUMBER = "Invalid phone number";
+	
+	public static final String INVALID_EMAIL = "Invalid email";
 }
