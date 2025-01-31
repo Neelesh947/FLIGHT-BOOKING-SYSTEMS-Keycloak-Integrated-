@@ -186,6 +186,7 @@ public class KeycloakServiceImpl implements KeycloakService{
 	            String roleGet = roles.getBody().getName();
 	            String roleId = roles.getBody().getId();
 	            asignRoleToTheUsers(realm, userId, roleGet, roleId);
+	            keyCloakRepresentation.setUserId(userId);
 	            return keyCloakRepresentation;
 	     } else {
 	            log.error("Failed to create user. Status code: {}. Response: {}", 

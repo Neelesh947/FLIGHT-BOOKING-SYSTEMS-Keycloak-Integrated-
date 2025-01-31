@@ -12,6 +12,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class KeyCloakRepresentation {
+	
+	private String userId;
 
     private String username;
 	

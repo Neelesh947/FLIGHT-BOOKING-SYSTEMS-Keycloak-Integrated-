@@ -25,4 +25,12 @@ public class ErrorConstants {
 	public static final String INVALID_PHONE_NUMBER = "Invalid phone number";
 	
 	public static final String INVALID_EMAIL = "Invalid email";
+	
+	public static final String USERNAME_CANNOT_BE_EMPTY = "username cannot be empty";
+	
+	public static final String NOT_FOUND = "Not found";
+	
+	public static final String PASSWORD_CANNOT_BE_EMPTY = "Password can not be empty";
+	
+	public static final String EMAIL_CANNOT_BE_EMPTY = "Email cannot be empty";
 }
