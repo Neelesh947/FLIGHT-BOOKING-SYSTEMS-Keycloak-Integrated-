@@ -56,6 +56,13 @@
             <artifactId>Key-Cloak-proxy</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!--Commons dependency added to import the common classes-->
+        <dependency>
+		    <groupId>com.example</groupId>
+		    <artifactId>Commons</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

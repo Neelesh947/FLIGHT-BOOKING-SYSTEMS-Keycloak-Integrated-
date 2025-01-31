@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
 @SpringBootApplication(scanBasePackages = {"com.example.demo.config","com.keycloak","com.keycloak.service",
-		"com.exception.handler"})
+		"com.exception.handler","com.example.utils","com.example.vo","com.example"})
 @ComponentScan(basePackages = {"com.example.demo"})
 public class FlightBookingSystemApplication {
 
