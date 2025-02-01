@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +38,10 @@ public class FlightOperationManagerController {
 		ResponseEntity<Object> operationManager = flightOperationManagerService.createFlightOperationmanager(
 				adminId, flightOperationManager, realm); 
 		return operationManager;
+	}
+	
+	public ResponseEntity<List<FlightOperationManager>> getListOfFlightOperationManager() {
+		return null;
 	}
 	
 }
