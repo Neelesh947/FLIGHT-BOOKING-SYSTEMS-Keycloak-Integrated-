@@ -6,6 +6,7 @@ import { AdminListComponent } from './super-admin/admin-list/admin-list.componen
 import { QuestionListComponent } from './super-admin/question-list/question-list.component';
 import { AddAdminComponent } from './super-admin/add-admin/add-admin.component';
 import { EditAdminComponent } from './super-admin/edit-admin/edit-admin.component';
+import { FlightOperationManagerComponent } from './admin/flight-operation-manager/flight-operation-manager.component';
 
 const routes: Routes = [
   { path: '', 
@@ -30,6 +31,18 @@ const routes: Routes = [
       {
         path:"edit-admin/:id",
         component:EditAdminComponent
+      },
+      {
+        path:"flight-operation-manager-list",
+        component:FlightOperationManagerComponent
+      },
+      {
+        path:"add-flight-operation-manager",
+        component:FlightOperationManagerComponent
+      },
+      {
+        path:"edit-flight-operation-manager/:id",
+        component:FlightOperationManagerComponent
       }
     ]
   },  

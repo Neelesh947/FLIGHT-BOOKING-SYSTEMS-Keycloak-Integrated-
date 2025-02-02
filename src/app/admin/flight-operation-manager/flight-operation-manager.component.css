@@ -1,0 +1,134 @@
+/* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7fc;
+    color: #333;
+  }
+  
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+  }
+  
+  .admin-title {
+    font-size: 20px;
+    font-weight: 400;
+    color: black;
+    display: inline-block;
+  }
+  
+  .demo-button {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: 400;
+    font-size: 15px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    float: right;
+  }
+  
+  .demo-button:hover {
+    background-color: #45a049;
+  }
+  
+  mat-tab-group {
+    margin-top: 10px;
+    width: 30%;
+  }
+  
+  mat-tab {
+    font-size: 10px; /* Reduced size */
+    padding: 4px 8px; /* Reduced padding for smaller buttons */
+  }
+  
+  mat-tab-label {
+    font-size: 12px; /* Smaller font size for tab labels */
+    padding: 4px 10px; /* Reduced padding for a more compact look */
+  }
+  
+  /* Simple Table Styles */
+  table {
+    width: 100%;
+    margin-top: 0px;
+    border-collapse: collapse;
+    background-color: #fff; /* No background color */
+  }
+  
+  th, td {
+    font-size: 14px; /* Reduced size */
+    padding: 2px 2px; /* Spacing for text */
+    text-align: center; /* Left-align the text */
+    border-bottom: 1px solid #ddd; /* Subtle border between rows */
+    line-height: 0.2;
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  th {
+    font-weight: bold;
+  }
+  
+  td {
+    color: #333; /* Default text color */
+    column-gap: 0cap;
+  }
+  
+  /* Add Responsive Design */
+  @media screen and (max-width: 768px) {
+    .admin-title {
+      font-size: 12px;
+    }
+  
+    .demo-button {
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+  
+    table {
+      font-size: 12px;
+    }
+  }
+  
+  .button-container {
+    display: flex;
+    gap: 10px; /* Add space between buttons */
+    justify-content: left; /* Center the buttons horizontally */
+    margin-top: 0px; /* Space above the buttons */
+  }
+  
+  .active-status {
+      color: blue; /* Blue for active */
+      font-weight: bold;
+  }
+    
+  .inactive-status {
+      color: red; /* Red for inactive */
+      font-weight: bold;
+  }
+  
+  .pagination-container {
+    display: flex;
+    align-items: center;  /* Vertically align the content */
+    background-color: #f5f5f5;  /* Set the background color for both */
+    padding: 10px;
+    border-radius: 4px; /* Optional, for rounded corners */
+  }
+  
+  .pagination-info {
+    margin-right: 600px;  /* Space between total count and paginator */
+    font-size: 14px;
+    line-height: 36px;   /* Align text with the paginator */
+    color: #333;         /* Text color */
+  }
+  
+  mat-paginator {
+    background-color: #f5f5f5;  /* Ensure the paginator has the same background */
+    display: inline-block;  /* Align paginator inline with the info */
+  }
+  

@@ -1,1 +1,108 @@
-<p>flight-operation-manager works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sidebar Layout</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.21/angular-material.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <h1 class="admin-title">Admin List</h1>
+    <button mat-raised-button routerLink="/navbar/add-flight-operation-manager" class="demo-button">
+        Add
+    </button>
+    <div *ngIf="selection.selected.length === 1" class="button-container">
+        <ng-container *ngFor="let a of flightOperationsManagers">
+            <ng-container *ngIf="a.id === selection.selected[0].id">
+                <button mat-raised-button [routerLink]="'/navbar/edit-flight-operation-manager/'+ a.id " class="demo-button" color="accent">
+                    Edit
+                </button>
+                <button *ngIf="a.enabled == false" mat-raised-button (click)="activateFlightOperationManager(a.id)" class="demo-button" color="primary">
+                    Activate
+                </button>
+                <button *ngIf="a.enabled == true" mat-raised-button (click)="deactiveFlightOperationManager(a.id)" class="demo-button" color="warn">
+                    Deactivate
+                </button>
+            </ng-container>        
+        </ng-container>       
+    </div>
+
+    <mat-tab-group [(selectedIndex)]="selectedTab" animationDuration="0ms" (selectedIndexChange)="onTabChange($event)">
+        <mat-tab label="All"></mat-tab>
+        <mat-tab label="Active"></mat-tab>
+        <mat-tab label="Inactive"></mat-tab>
+    </mat-tab-group>      
+
+    <!-- Table displaying the admin data -->
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+         <!-- Select Column -->
+         <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="selectAll($event)" [checked]="isAllSelected()" [indeterminate]="isIndeterminate()"> </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let admin">
+                <mat-checkbox (change)="onSelect($event, admin)" [checked]="selection.isSelected(admin)"> </mat-checkbox>
+            </td>
+        </ng-container>
+
+        <!-- First Name Column -->
+        <ng-container matColumnDef="First Name">
+            <th mat-header-cell *matHeaderCellDef> First Name </th>
+            <td mat-cell *matCellDef="let admin"> {{ admin.firstName }} </td>
+        </ng-container>
+
+        <!-- Last Name Column -->
+        <ng-container matColumnDef="Last Name">
+            <th mat-header-cell *matHeaderCellDef> Last Name </th>
+            <td mat-cell *matCellDef="let admin"> {{ admin.lastName }} </td>
+        </ng-container>
+
+        <!-- Phone Number Column -->
+        <ng-container matColumnDef="Phone Number">
+            <th mat-header-cell *matHeaderCellDef> Phone Number </th>
+            <td mat-cell *matCellDef="let admin"> {{ admin.phoneNumber }} </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="emailId">
+            <th mat-header-cell *matHeaderCellDef> E-mail ID </th>
+            <td mat-cell *matCellDef="let admin"> {{ admin.emailId }} </td>
+        </ng-container>
+
+        <!-- Username Column -->
+        <ng-container matColumnDef="Username">
+            <th mat-header-cell *matHeaderCellDef> Username </th>
+            <td mat-cell *matCellDef="let admin"> {{ admin.username }} </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="Status">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let admin" [ngClass]="{'active-status': admin.enabled, 'inactive-status': !admin.enabled}">
+                {{ admin.enabled === true ? 'Active' : 'Inactive' }}
+            </td>
+        </ng-container>    
+
+        <!-- Header and Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="pagination-container">
+        <div class="pagination-info">
+          <span style="font-size: 15px; font-weight: bold;"> Total: {{ totalCounts }}</span> <!-- Total count of admins -->
+        </div>
+      
+        <mat-paginator [length]="totalCounts"
+                       [pageSize]="pageSize"
+                       [pageSizeOptions]="[5, 10, 25, 100]"
+                       (page)="pageChanged($event)"
+                       aria-label="Select page">
+        </mat-paginator>
+      </div>      
+</div>
+</body>
+</html>

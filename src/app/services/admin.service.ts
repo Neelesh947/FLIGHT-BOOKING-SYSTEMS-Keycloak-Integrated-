@@ -1,15 +1,29 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AuthServicesService } from './auth-services.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private auth:AuthServicesService) { }
+
+private getAuthHeaders(): HttpHeaders{
+   const token = this.auth.getToken();
+    if (token) {
+      return new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+    } else {
+      return new HttpHeaders();
+    }
+}  
 
 public getAdminById(adminId: string){
-  return this.http.get(`http://localhost:8082/dev/admin/${adminId}`);
+  const headers = this.getAuthHeaders();
+  console.log("getAdminHeaders",headers);
+  return this.http.get(`http://localhost:8082/dev/admin/${adminId}`, {headers});
 }
   
 
@@ -22,7 +36,10 @@ public getListOfAdmins(page: number, size: number, isHidden?: boolean){
     if (isHidden !== undefined) {
       params = params.set('isHidden', isHidden.toString());
   }
-    return this.http.get("http://localhost:8082/dev/admin/get-admin-list", {params});
+
+  const token = this.auth.getToken();
+  const headers = this.getAuthHeaders();
+    return this.http.get("http://localhost:8082/dev/admin/get-admin-list", {params , headers});
 }
 
   //disable the admin

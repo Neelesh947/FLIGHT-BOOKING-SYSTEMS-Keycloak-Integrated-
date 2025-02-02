@@ -10,16 +10,16 @@
         <div class="logo">
             <img src="../../../assets/logo.jpg" alt="Logo" />
         </div>
-        <!-----------------role = super_admin--------------->
+        <!-----------------role = super_admin---------------------->
         <li *ngIf="role.includes('super_admin')">
             <a mat-list-item  [routerLink]="'admin-list'">Admin</a>
         </li>
         <li *ngIf="role.includes('super_admin')">
             <a mat-list-item  href="#">Questions</a>
         </li>
-        <!------------------role = admin-------------------->
+        <!------------------role = admin---------------------------->
         <li *ngIf="role.includes('admin')">
-          <a mat-list-item  >Flight Operation</a>
+          <a mat-list-item [routerLink]="'flight-operation-manager-list'" >Flight Operation</a>
         </li>
         <li *ngIf="role.includes('admin')">
           <a mat-list-item  >Customer Support</a>
@@ -33,13 +33,13 @@
         <li *ngIf="role.includes('admin')">
           <a mat-list-item  >Payment Processor</a>
         </li>
-        <!------------------role = flight_operations_manager----------------->
-        <!------------------role = customer_support-------------->
-        <!------------------role = it_support-------------------->
-        <!------------------role = marketing_manager-------------------------->
-        <!------------------role = payment_processor-------------------------------->
-        <!------------------role = travel_agent------------------------------->
-        <!------------------role = User--------------------------->
+        <!------------------role = flight_operations_manager-------------------->
+        <!------------------role = customer_support----------------------------->
+        <!------------------role = it_support----------------------------------->
+        <!------------------role = marketing_manager---------------------------->
+        <!------------------role = payment_processor---------------------------->
+        <!------------------role = travel_agent--------------------------------->
+        <!------------------role = User----------------------------------------->
       </mat-nav-list>
     </mat-sidenav>
   

@@ -30,6 +30,8 @@ import { FlightOperationManagerComponent } from './admin/flight-operation-manage
 import { MarketingManagerComponent } from './admin/marketing-manager/marketing-manager.component';
 import { ItSupportDeveloperComponent } from './admin/it-support-developer/it-support-developer.component';
 import { PaymentProcessorComponent } from './admin/payment-processor/payment-processor.component';
+import { AddFlightOperationManagerComponent } from './admin/add-flight-operation-manager/add-flight-operation-manager.component';
+import { EditFlightOperationManagerComponent } from './admin/edit-flight-operation-manager/edit-flight-operation-manager.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,9 @@ import { PaymentProcessorComponent } from './admin/payment-processor/payment-pro
     FlightOperationManagerComponent,
     MarketingManagerComponent,
     ItSupportDeveloperComponent,
-    PaymentProcessorComponent
+    PaymentProcessorComponent,
+    AddFlightOperationManagerComponent,
+    EditFlightOperationManagerComponent
   ],
   imports: [
     BrowserModule,
