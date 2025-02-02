@@ -15,4 +15,6 @@ public interface FlightOperationManagerService {
 
 	@SuppressWarnings("rawtypes")
 	Page<Map> fetchOperationManager(Map<String, Object> allParams, String adminId, Pageable pageable, String realm);
+
+	String updateFlightOperationManagerStatus(Map<String, Object> status, String fomId, String realm);
 }

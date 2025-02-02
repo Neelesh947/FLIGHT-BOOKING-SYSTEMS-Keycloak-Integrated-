@@ -7,7 +7,7 @@ public class Constants {
 	public static final String IS_HIDDEN = "isHidden";
 	public static final String SEARCH_STRING = "searchString";
 	public static final String TRUE = "true";
-//	public static final String FALSE = "false";
+	public static final String FALSE = "false";
 	public static final String ID = "id";
 	public static final String LAST_NAME = "lastName";
 	public static final String FIRST_NAME = "firstName";

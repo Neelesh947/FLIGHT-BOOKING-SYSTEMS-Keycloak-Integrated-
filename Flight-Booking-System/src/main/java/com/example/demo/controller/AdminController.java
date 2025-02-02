@@ -58,7 +58,7 @@ public class AdminController {
 	}
 	
 	/**
-	 * Fetch all Admin for a specific all param
+	 * Fetch all Admin for a specific all params
 	 * @param allParams
 	 * @param page able
 	 * @param realm

@@ -14,4 +14,8 @@ public class Constants {
 	
 	public static final String MESSAGE = "message";
 	
+	public static final String TRUE = "true";
+	
+	public static final String SUCCESSFULLY_UPDATED = "successfully updated";
+	
 }

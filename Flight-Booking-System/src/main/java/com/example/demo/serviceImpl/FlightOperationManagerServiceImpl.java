@@ -3,17 +3,13 @@ package com.example.demo.serviceImpl;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -184,6 +180,20 @@ public class FlightOperationManagerServiceImpl implements FlightOperationManager
 		List<AdminAndFlightManagerMapping> list = adminAndFlightManagerMappingRepository
 							.findByAdminId(adminId);
 		return list;
+	}
+
+	/**
+	 * status active and inactive
+	 */
+	public String updateFlightOperationManagerStatus(Map<String, Object> status, String fomId, String realm) {
+		UserRepresentation userResponse = keycloakUtility.userById(fomId, realm);
+		if(userResponse == null) {
+			throw new DataUnavailable(ErrorConstants.NO_DATA_FOUND);
+		}
+		boolean enabled = (boolean) status.get(Constants.ENABLED);
+		userResponse.setEnabled(enabled);
+		keycloakUtility.updateUser(userResponse, userResponse.getId(), realm);
+		return Constants.TRUE;
 	}
 
 }

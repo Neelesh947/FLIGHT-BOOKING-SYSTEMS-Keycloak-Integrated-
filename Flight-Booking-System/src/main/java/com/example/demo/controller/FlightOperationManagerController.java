@@ -1,12 +1,15 @@
 package com.example.demo.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Utils.ErrorConstants;
+import com.example.demo.config.Constants;
 import com.example.demo.service.FlightOperationManagerService;
 import com.example.utils.SecurityUtils;
 import com.example.vo.FlightOperationManager;
@@ -49,12 +53,12 @@ public class FlightOperationManagerController {
 	/**
 	 * get list of flight operation manager
 	 * @param allParams
-	 * @param pageable
+	 * @param pageAble
 	 * @param realm
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	@GetMapping("/get-flight-operation-managerc")
+	@GetMapping("/get-flight-operation-manager")
 	public ResponseEntity<?> getListOfFlightOperationManager(@RequestParam Map<String, Object> allParams,
 			Pageable pageable, @PathVariable String realm) {
 		log.info("getting the list of flight-operation-manager");
@@ -74,4 +78,24 @@ public class FlightOperationManagerController {
         }
 	}
 	
+	/**
+	 * Update the status of FOM : - active or inactive
+	 * @param status
+	 * @param fomId
+	 * @param realm
+	 * @return
+	 */
+	@PatchMapping("/updateStatus/{id}")
+	public ResponseEntity<?> updateFlightOperationManagerStatus(@RequestBody Map<String, Object> status, 
+			@PathVariable("id") String fomId, @PathVariable String realm) {
+		log.info("Invoked updateFlightOperationManager for Admin {} with request body: {}", fomId, status.toString());
+		String response = flightOperationManagerService.updateFlightOperationManagerStatus(status, fomId, realm);
+		Map<String, Object> resMap = new HashMap<>();
+		if(response.equals(Constants.TRUE)) {
+			resMap.put(Constants.STATUS, Constants.SUCCESS);
+			resMap.put(Constants.MESSAGE, Constants.SUCCESSFULLY_UPDATED);
+			return new ResponseEntity<>(resMap, HttpStatus.OK);
+		}
+		return null;
+	}
 }
