@@ -2,18 +2,30 @@ package com.example.demo.serviceImpl;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Entity.AdminAndFlightManagerMapping;
+import com.example.demo.Utils.Constants;
 import com.example.demo.Utils.ErrorConstants;
 import com.example.demo.Utils.KeycloakUtility;
 import com.example.demo.repository.AdminAndFlightManagerMappingRepository;
@@ -30,7 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class FlightOperationManagerServiceImpl implements FlightOperationManagerService{
-	
+		
 	@Autowired
 	private KeycloakUtility keycloakUtility;
 	
@@ -102,6 +114,76 @@ public class FlightOperationManagerServiceImpl implements FlightOperationManager
 			throw new InvalidRequest(ErrorConstants.EMAIL_ALREADY_EXISTS);
 		}		
 		return true;
+	}
+
+	/**
+	 * get list of operation manager based on adminId
+	 */
+	@SuppressWarnings("rawtypes")
+	public Page<Map> fetchOperationManager(Map<String, Object> allParams, String adminId, Pageable page,
+			String realm) {
+		log.info("Invoked operation manager");
+		try {
+			List<UserRepresentation> flightOperations = keycloakUtility.allUsersOfSpecificRoleAndRealm(
+					roleNameOfFOM, allParams, realm);
+			List<AdminAndFlightManagerMapping> listOfMappedFOM = findTheListOfLinkedFOM(adminId);
+			List<UserRepresentation> linkedFlightOperationManager = flightOperations
+						.stream()
+						.filter(flightOperation -> listOfMappedFOM.stream()
+								.anyMatch(mapping -> mapping.getFlightmanagerId().equals(flightOperation.getId())))
+						.collect(Collectors.toList());
+			List<UserRepresentation> sortedList = linkedFlightOperationManager.stream()
+						.sorted(Comparator.comparing(UserRepresentation :: getCreatedTimestamp).reversed())
+						.collect(Collectors.toList());
+			if(sortedList.size() < 1) {
+				throw new DataUnavailable(ErrorConstants.NO_DATA_FOUND);
+			}
+			if(allParams.containsKey(Constants.IS_HIDDEN) &&  !allParams.containsKey(Constants.SEARCH_STRING)) {
+				sortedList = allParams.get(Constants.IS_HIDDEN).equals(Constants.TRUE) ? sortedList.stream()
+						.filter(UserRepresentation -> UserRepresentation.isEnabled().booleanValue() == true)
+						.collect(Collectors.toList()) : sortedList.stream()
+						.filter(UserRepresentation -> UserRepresentation.isEnabled().booleanValue() == false)
+						.collect(Collectors.toList());
+			}
+			List<Map> flightManagerList = sortedList.stream().map(manager -> {
+				Map<String, Object> map = generateFlightManagerMap(manager);
+				return map;
+			}).collect(Collectors.toList());
+			int totalElements = flightManagerList.size();
+			int fromIndex = page.getPageNumber() * page.getPageSize();
+			int toIndex = page.getPageSize() + fromIndex;
+			return new PageImpl<>(page.getPageNumber() < Math.ceil((double) totalElements / (double) page.getPageSize())
+					? flightManagerList.subList(fromIndex, toIndex > totalElements ? totalElements : toIndex )
+					: new ArrayList<>(), page, totalElements);
+		} catch(Exception e) {
+			log.info("Some exception occurred", e.getMessage() , e);
+			throw new InternalServerError(ErrorConstants.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	private Map<String, Object> generateFlightManagerMap(UserRepresentation manager) {
+		Map<String, Object> map = new HashMap<>();
+		map.put(Constants.ID, manager.getId());
+		map.put(Constants.USERNAME, manager.getUsername());
+		map.put(Constants.FIRST_NAME, manager.getFirstName());
+		map.put(Constants.LAST_NAME, manager.getLastName());
+		map.put(Constants.ENABLED, manager.isEnabled());
+		map.put(Constants.EMAIL, manager.getEmail());
+		map.put(Constants.PHONE_NUMBER,
+				manager.getAttributes().containsKey(Constants.PHONE_NUMBER)
+					? manager.getAttributes().get(Constants.PHONE_NUMBER).iterator().next()
+							: "N/A");
+		map.put(Constants.COUNTRY_CODE,
+				manager.getAttributes().containsKey(Constants.COUNTRY_CODE)
+					? manager.getAttributes().get(Constants.COUNTRY_CODE).iterator().next()
+							: "N/A");
+		return map;
+	}
+
+	private List<AdminAndFlightManagerMapping> findTheListOfLinkedFOM(String adminId) {
+		List<AdminAndFlightManagerMapping> list = adminAndFlightManagerMappingRepository
+							.findByAdminId(adminId);
+		return list;
 	}
 
 }
