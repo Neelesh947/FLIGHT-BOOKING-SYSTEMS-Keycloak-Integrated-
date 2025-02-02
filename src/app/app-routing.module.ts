@@ -7,6 +7,8 @@ import { QuestionListComponent } from './super-admin/question-list/question-list
 import { AddAdminComponent } from './super-admin/add-admin/add-admin.component';
 import { EditAdminComponent } from './super-admin/edit-admin/edit-admin.component';
 import { FlightOperationManagerComponent } from './admin/flight-operation-manager/flight-operation-manager.component';
+import { AddFlightOperationManagerComponent } from './admin/add-flight-operation-manager/add-flight-operation-manager.component';
+import { EditFlightOperationManagerComponent } from './admin/edit-flight-operation-manager/edit-flight-operation-manager.component';
 
 const routes: Routes = [
   { path: '', 
@@ -38,11 +40,11 @@ const routes: Routes = [
       },
       {
         path:"add-flight-operation-manager",
-        component:FlightOperationManagerComponent
+        component:AddFlightOperationManagerComponent
       },
       {
         path:"edit-flight-operation-manager/:id",
-        component:FlightOperationManagerComponent
+        component:EditFlightOperationManagerComponent
       }
     ]
   },  

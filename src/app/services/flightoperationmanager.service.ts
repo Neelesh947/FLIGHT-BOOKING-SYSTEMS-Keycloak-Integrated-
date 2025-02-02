@@ -31,18 +31,29 @@ export class FlightoperationmanagerService {
 
   const token = this.auth.getToken();
   const headers = this.getAuthHeaders();
-    return this.http.get("http://localhost:8082/dev/FlightOperationManager/get-flight-operation-managerc", {params , headers});
+    return this.http.get("http://localhost:8082/dev/FlightOperationManager/get-flight-operation-manager", {params , headers});
   }
 
   public enableFlightOperationManager(flightOperationManagerId : String) {
-    const url = `http://localhost:8082/dev/admin/updateStatus/${flightOperationManagerId}`;
+    const url = `http://localhost:8082/dev/FlightOperationManager/updateStatus/${flightOperationManagerId}`;
     const body = { enabled: true };
     return this.http.patch(url, body);
   }
 
   public disableFlightOperationManager(flightOperationManagerId: string, enabled: boolean) {
-    const url = `http://localhost:8082/dev/admin/updateStatus/${flightOperationManagerId}`;
+    const url = `http://localhost:8082/dev/FlightOperationManager/updateStatus/${flightOperationManagerId}`;
     const body = { enabled };
     return this.http.patch(url, body);
+}
+
+public createFlightOperationManager(flightOperationManager:any) {
+  const headers = this.getAuthHeaders();
+  return this.http.post("http://localhost:8082/dev/FlightOperationManager/create/operation-manager", flightOperationManager, { headers });
+}
+
+public updateFlightOperationManager(FOMID: string, flightOperationManager:any){
+  const url = `http://localhost:8082/dev/admin/${FOMID}`;
+  const headers = this.getAuthHeaders();
+  return this.http.patch(url,flightOperationManager,{ headers });
 }
 }
