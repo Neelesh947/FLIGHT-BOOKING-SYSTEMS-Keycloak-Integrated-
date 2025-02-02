@@ -21,12 +21,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Entity.AdminAndFlightManagerMapping;
+import com.example.demo.Entity.FlightOperationManager;
 import com.example.demo.Utils.Constants;
 import com.example.demo.Utils.ErrorConstants;
 import com.example.demo.Utils.KeycloakUtility;
 import com.example.demo.repository.AdminAndFlightManagerMappingRepository;
 import com.example.demo.service.FlightOperationManagerService;
-import com.example.vo.FlightOperationManager;
 import com.exception.model.DataUnavailable;
 import com.exception.model.InternalServerError;
 import com.exception.model.InvalidRequest;
@@ -94,18 +94,18 @@ public class FlightOperationManagerServiceImpl implements FlightOperationManager
 		if(flightOperationManager.getPassword() == null || flightOperationManager.getPassword().isEmpty()) {
 			throw new InvalidRequest(ErrorConstants.PASSWORD_CANNOT_BE_EMPTY);
 		}
-		if(flightOperationManager.getEmail() == null || flightOperationManager.getEmail().isEmpty()) {
+		if(flightOperationManager.getEmailAddress() == null || flightOperationManager.getEmailAddress().isEmpty()) {
 			throw new InvalidRequest(ErrorConstants.EMAIL_CANNOT_BE_EMPTY);
 		}
 		
 		List<UserRepresentation> existingUserWithPhoneNumber = keycloakUtility.usersByPhoneAndRole(
 				flightOperationManager.getPhoneNumber(), roleNameOfFOM, realm);
-		if(existingUserWithPhoneNumber.size() > 0) {
-			throw new InvalidRequest(ErrorConstants.USER_EXIST_WITH_PHONE_NUMBER);
-		}		
+//		if(existingUserWithPhoneNumber.size() > 0) {
+//			throw new InvalidRequest(ErrorConstants.USER_EXIST_WITH_PHONE_NUMBER);
+//		}		
 		
 		List<UserRepresentation> existingUserWithEmail = keycloakUtility.userByEmailAndRole(
-				flightOperationManager.getEmail(), roleNameOfFOM, realm);
+				flightOperationManager.getEmailAddress(), roleNameOfFOM, realm);
 		if(existingUserWithEmail.size() > 0) {
 			throw new InvalidRequest(ErrorConstants.EMAIL_ALREADY_EXISTS);
 		}		
