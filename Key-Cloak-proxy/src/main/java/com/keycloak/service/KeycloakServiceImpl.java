@@ -471,6 +471,7 @@ public class KeycloakServiceImpl implements KeycloakService{
 		     		     
 		     ResponseEntity<UserRepresentation> response = restTemplate.exchange(
 		    		 url, HttpMethod.PUT, entity, UserRepresentation.class);
+		     log.info("Keycloak response: {}", response.getBody());
 		     HttpStatusCode statusCode = response.getStatusCode(); 
 		     if(statusCode.is4xxClientError() || statusCode.is5xxServerError()) {
 		    	 String responseString = convertToJson(response.getBody());

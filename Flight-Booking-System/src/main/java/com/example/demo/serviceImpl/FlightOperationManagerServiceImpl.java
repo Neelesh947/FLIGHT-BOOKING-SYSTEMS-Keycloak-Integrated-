@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -94,7 +95,7 @@ public class FlightOperationManagerServiceImpl implements FlightOperationManager
 		if(flightOperationManager.getPassword() == null || flightOperationManager.getPassword().isEmpty()) {
 			throw new InvalidRequest(ErrorConstants.PASSWORD_CANNOT_BE_EMPTY);
 		}
-		if(flightOperationManager.getEmailAddress() == null || flightOperationManager.getEmailAddress().isEmpty()) {
+		if(flightOperationManager.getEmail() == null || flightOperationManager.getEmail().isEmpty()) {
 			throw new InvalidRequest(ErrorConstants.EMAIL_CANNOT_BE_EMPTY);
 		}
 		
@@ -105,7 +106,7 @@ public class FlightOperationManagerServiceImpl implements FlightOperationManager
 //		}		
 		
 		List<UserRepresentation> existingUserWithEmail = keycloakUtility.userByEmailAndRole(
-				flightOperationManager.getEmailAddress(), roleNameOfFOM, realm);
+				flightOperationManager.getEmail(), roleNameOfFOM, realm);
 		if(existingUserWithEmail.size() > 0) {
 			throw new InvalidRequest(ErrorConstants.EMAIL_ALREADY_EXISTS);
 		}		
@@ -194,6 +195,37 @@ public class FlightOperationManagerServiceImpl implements FlightOperationManager
 		userResponse.setEnabled(enabled);
 		keycloakUtility.updateUser(userResponse, userResponse.getId(), realm);
 		return Constants.TRUE;
+	}
+
+	/**
+	 * get flight operation manager by id
+	 */
+	public Map<String, Object> getUserById(String id, String realm) {
+		UserRepresentation user = keycloakUtility.userById(id, realm);
+		if(user == null ) {
+			throw new DataUnavailable(ErrorConstants.NO_DATA_FOUND);
+		}
+		Map<String, Object> flightOperationManager = new LinkedHashMap<>();
+		flightOperationManager.put(Constants.ID, user.getId());
+		flightOperationManager.put(Constants.EMAIL, user.getEmail());
+		flightOperationManager.put(Constants.FIRST_NAME, user.getFirstName());
+		flightOperationManager.put(Constants.LAST_NAME, user.getLastName());
+		flightOperationManager.put(Constants.PHONE_NUMBER, user.getAttributes().get(Constants.PHONE_NUMBER));
+		flightOperationManager.put(Constants.USERNAME, user.getUsername());
+		flightOperationManager.put(Constants.COUNTRY_CODE, user.getAttributes().get(Constants.COUNTRY_CODE));
+		flightOperationManager.put(Constants.COUNTRY, user.getAttributes().get(Constants.COUNTRY));
+		flightOperationManager.put(Constants.ADDRESS, user.getAttributes().get(Constants.ADDRESS));
+		flightOperationManager.put(Constants.CITY, user.getAttributes().get(Constants.CITY));
+		flightOperationManager.put(Constants.POSTAL_CODE, user.getAttributes().get(Constants.POSTAL_CODE));
+		flightOperationManager.put(Constants.STATE, user.getAttributes().get(Constants.STATE));
+		return flightOperationManager;
+	}
+
+	@Override
+	public ResponseEntity<?> updateFlightOperationManager(FlightOperationManager flightOperationManager, String fomId,
+			String realm) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

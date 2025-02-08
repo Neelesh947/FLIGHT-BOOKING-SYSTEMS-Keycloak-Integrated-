@@ -13,7 +13,7 @@ import lombok.ToString;
 public class KeycloakUserRepresentation {
 
 	private String username;
-	private String emailAddress;
+	private String email;
 	@NotBlank(message = "first name should not be blank")
 	private String firstName;
 	@NotBlank(message = "last name should not be blank")

@@ -23,6 +23,7 @@ import com.example.demo.Utils.SecurityUtils;
 import com.example.demo.config.Constants;
 import com.example.demo.service.FlightOperationManagerService;
 import com.exception.model.InternalServerError;
+import com.exception.model.UnauthorizedRequest;
 
 import lombok.extern.slf4j.Slf4j;
 //
@@ -92,6 +93,44 @@ public class FlightOperationManagerController {
 		String response = flightOperationManagerService.updateFlightOperationManagerStatus(status, fomId, realm);
 		Map<String, Object> resMap = new HashMap<>();
 		if(response.equals(Constants.TRUE)) {
+			resMap.put(Constants.STATUS, Constants.SUCCESS);
+			resMap.put(Constants.MESSAGE, Constants.SUCCESSFULLY_UPDATED);
+			return new ResponseEntity<>(resMap, HttpStatus.OK);
+		}
+		return null;
+	}
+	
+	/**
+	 * get flight operation manager by id
+	 * @param id
+	 * @param realm
+	 * @return
+	 */
+	@GetMapping("{id}")
+	public ResponseEntity<Map<String, Object>> getListOfFlightOperationManager(@PathVariable String id, 
+			@PathVariable String realm) {
+		String adminId = SecurityUtils.getCurrentUserIdSupplier.get();
+		if(adminId == null ) {
+			throw new UnauthorizedRequest(adminId);
+		}
+		Map<String, Object> listOfFOM = flightOperationManagerService.getUserById(id, realm);
+		return ResponseEntity.status(HttpStatus.OK).body(listOfFOM);
+	} 
+	
+	/**
+	 * update flight operation manager
+	 * @param flightOperationManager
+	 * @param fomId
+	 * @param realm
+	 * @return
+	 */
+	@PatchMapping("update/{fomId}")
+	public ResponseEntity<?> updateFlightOperationManager(@RequestBody FlightOperationManager flightOperationManager,
+			@PathVariable String fomId, @PathVariable String realm) {
+		ResponseEntity<?> updateFlightOperationManager = flightOperationManagerService
+								.updateFlightOperationManager(flightOperationManager, fomId, realm);
+		Map<String, Object> resMap = new HashMap<>();
+		if(updateFlightOperationManager != null) {
 			resMap.put(Constants.STATUS, Constants.SUCCESS);
 			resMap.put(Constants.MESSAGE, Constants.SUCCESSFULLY_UPDATED);
 			return new ResponseEntity<>(resMap, HttpStatus.OK);

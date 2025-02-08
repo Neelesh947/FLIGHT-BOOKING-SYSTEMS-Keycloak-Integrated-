@@ -17,4 +17,9 @@ public interface FlightOperationManagerService {
 	Page<Map> fetchOperationManager(Map<String, Object> allParams, String adminId, Pageable pageable, String realm);
 
 	String updateFlightOperationManagerStatus(Map<String, Object> status, String fomId, String realm);
+
+	Map<String, Object> getUserById(String id, String realm);
+
+	ResponseEntity<?> updateFlightOperationManager(FlightOperationManager flightOperationManager, String fomId,
+			String realm);
 }

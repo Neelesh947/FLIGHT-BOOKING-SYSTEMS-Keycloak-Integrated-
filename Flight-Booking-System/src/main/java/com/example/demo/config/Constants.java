@@ -18,4 +18,6 @@ public class Constants {
 	
 	public static final String SUCCESSFULLY_UPDATED = "successfully updated";
 	
+	public static final String FLIGHT_OPERATION_MANAGER_ID = "flightOperationManagerId";
+	
 }

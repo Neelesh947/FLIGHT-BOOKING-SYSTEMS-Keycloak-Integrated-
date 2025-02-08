@@ -130,7 +130,7 @@ public class AdminController {
 		Map<String, Object> resMap = new HashMap<>();
 		if(updateAdmin != null) {
 			resMap.put(Constants.STATUS, Constants.SUCCESS);
-			resMap.put(Constants.MESSAGE, SUCCESSFULLY_UPDATED);
+			resMap.put(Constants.MESSAGE, Constants.SUCCESSFULLY_UPDATED);
 			return new ResponseEntity<>(resMap, HttpStatus.OK);
 		}
 		return null;
