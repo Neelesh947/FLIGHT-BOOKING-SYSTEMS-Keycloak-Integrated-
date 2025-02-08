@@ -9,6 +9,9 @@ import { EditAdminComponent } from './super-admin/edit-admin/edit-admin.componen
 import { FlightOperationManagerComponent } from './admin/flight-operation-manager/flight-operation-manager.component';
 import { AddFlightOperationManagerComponent } from './admin/add-flight-operation-manager/add-flight-operation-manager.component';
 import { EditFlightOperationManagerComponent } from './admin/edit-flight-operation-manager/edit-flight-operation-manager.component';
+import { AddUserComponent } from './flightOperationManager/user/add-user/add-user.component';
+import { EditUserComponent } from './flightOperationManager/user/edit-user/edit-user.component';
+import { UserListComponent } from './flightOperationManager/user/user-list/user-list.component';
 
 const routes: Routes = [
   { path: '', 
@@ -45,6 +48,18 @@ const routes: Routes = [
       {
         path:"edit-flight-operation-manager/:id",
         component:EditFlightOperationManagerComponent
+      },
+      {
+        path:"userList",
+        component:UserListComponent
+      },
+      {
+        path:"addUser",
+        component:AddUserComponent
+      },
+      {
+        path:"editUser/:id",
+        component:EditUserComponent
       }
     ]
   },  

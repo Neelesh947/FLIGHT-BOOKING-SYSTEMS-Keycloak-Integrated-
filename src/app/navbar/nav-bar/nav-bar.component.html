@@ -34,6 +34,18 @@
           <a mat-list-item  >Payment Processor</a>
         </li>
         <!------------------role = flight_operations_manager-------------------->
+        <li *ngIf="role.includes('flight_operations_manager')">
+          <a mat-list-item [routerLink]="'userList'" >User</a>
+        </li>
+        <li *ngIf="role.includes('flight_operations_manager')">
+          <a mat-list-item  >Flight manage</a>
+        </li>
+        <li *ngIf="role.includes('flight_operations_manager')">
+          <a mat-list-item  >Airports</a>
+        </li>
+        <li *ngIf="role.includes('flight_operations_manager')">
+          <a mat-list-item  >Travel Agent</a>
+        </li>
         <!------------------role = customer_support----------------------------->
         <!------------------role = it_support----------------------------------->
         <!------------------role = marketing_manager---------------------------->

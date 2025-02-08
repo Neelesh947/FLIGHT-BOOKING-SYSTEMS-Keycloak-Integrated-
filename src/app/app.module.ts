@@ -32,6 +32,18 @@ import { ItSupportDeveloperComponent } from './admin/it-support-developer/it-sup
 import { PaymentProcessorComponent } from './admin/payment-processor/payment-processor.component';
 import { AddFlightOperationManagerComponent } from './admin/add-flight-operation-manager/add-flight-operation-manager.component';
 import { EditFlightOperationManagerComponent } from './admin/edit-flight-operation-manager/edit-flight-operation-manager.component';
+import { AddUserComponent } from './flightOperationManager/user/add-user/add-user.component';
+import { UserListComponent } from './flightOperationManager/user/user-list/user-list.component';
+import { EditUserComponent } from './flightOperationManager/user/edit-user/edit-user.component';
+import { AddFlightComponent } from './flightOperationManager/flightManagement/add-flight/add-flight.component';
+import { EditFlightComponent } from './flightOperationManager/flightManagement/edit-flight/edit-flight.component';
+import { FlightListComponent } from './flightOperationManager/flightManagement/flight-list/flight-list.component';
+import { AddAirportsComponent } from './flightOperationManager/Airports/add-airports/add-airports.component';
+import { EditAirportsComponent } from './flightOperationManager/Airports/edit-airports/edit-airports.component';
+import { AirportListComponent } from './flightOperationManager/Airports/airport-list/airport-list.component';
+import { AddTravelAgentComponent } from './flightOperationManager/travelAgent/add-travel-agent/add-travel-agent.component';
+import { EditTravelAgentComponent } from './flightOperationManager/travelAgent/edit-travel-agent/edit-travel-agent.component';
+import { TravelAgentListComponent } from './flightOperationManager/travelAgent/travel-agent-list/travel-agent-list.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +61,19 @@ import { EditFlightOperationManagerComponent } from './admin/edit-flight-operati
     ItSupportDeveloperComponent,
     PaymentProcessorComponent,
     AddFlightOperationManagerComponent,
-    EditFlightOperationManagerComponent
+    EditFlightOperationManagerComponent,
+    AddUserComponent,
+    UserListComponent,
+    EditUserComponent,
+    AddFlightComponent,
+    EditFlightComponent,
+    FlightListComponent,
+    AddAirportsComponent,
+    EditAirportsComponent,
+    AirportListComponent,
+    AddTravelAgentComponent,
+    EditTravelAgentComponent,
+    TravelAgentListComponent
   ],
   imports: [
     BrowserModule,
