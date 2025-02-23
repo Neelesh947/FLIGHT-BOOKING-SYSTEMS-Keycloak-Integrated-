@@ -14,6 +14,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -61,6 +63,10 @@ public class Flight {
 	    public boolean isAvailable() {
 	        return availableSeats > 0;
 	    }
+	    
+	    @ManyToOne
+	    @JoinColumn(name = "airport_id")
+	    private Airport airport;
 	    
 	    public FlightDto getFlightDto() {
 	    	FlightDto dto=new FlightDto();

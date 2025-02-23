@@ -33,4 +33,14 @@ public class ErrorConstants {
 	public static final String PASSWORD_CANNOT_BE_EMPTY = "Password can not be empty";
 	
 	public static final String EMAIL_CANNOT_BE_EMPTY = "Email cannot be empty";
+	
+	public static final String AIRPORT_NAME_MANDATORY = "Airport name cannot be empty";
+	
+	public static final String AIRPORT_CODE = "Airport code cannot be empty";
+	
+	public static final String AIRPORT_LOCATION = "Airport location cannot be empty";
+	
+	public static final String AIRPORT_NAME_CODE_LOCATION_EXIST = "Airport name, code and location already exists";
+	
+	public static final String AIRPORT_CODE_LOCATION_EXIST = "Airport code and location exist";
 }

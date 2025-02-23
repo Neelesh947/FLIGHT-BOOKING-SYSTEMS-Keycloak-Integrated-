@@ -25,4 +25,11 @@ public class Constants {
 	public static final String POSTAL_CODE = "postalCode";
 	public static final String STATE = "state";
 	public static final String CUSTOMER_SUPPORT_NUMBER = "customerSupportNumber";
+	public static final String AIRPORT_ID = "airportId";
+	public static final String AIRPORT_NAME = "airportName";
+	public static final String AIRPORT_CODE = "airportCode";
+	public static final String LOCATION = "location";
+	public static final String IS_ENABLED = "isEnabled";
+	public static final String CREATED_DATE = "createdDate";
+	public static final String UPDATED_DATE = "updated_date";
 }
