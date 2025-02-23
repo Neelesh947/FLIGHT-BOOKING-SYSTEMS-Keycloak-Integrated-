@@ -10,13 +10,13 @@
 
 <div class="container">
     <h1 class="admin-title">Admin List</h1>
-    <button mat-raised-button routerLink="/navbar/add-admin" class="demo-button">
+    <button mat-raised-button routerLink="/navbar/addUser" class="demo-button">
         Add
     </button>
     <div *ngIf="selection.selected.length === 1" class="button-container">
         <ng-container *ngFor="let a of users">
             <ng-container *ngIf="a.id === selection.selected[0].id">
-                <button mat-raised-button [routerLink]="'/navbar/edit-admin/'+ a.id " class="demo-button" color="accent">
+                <button mat-raised-button [routerLink]="'/navbar/editUser/'+ a.id " class="demo-button" color="accent">
                     Edit
                 </button>
                 <button *ngIf="a.enabled == false" mat-raised-button (click)="activateUsers(a.id)" class="demo-button" color="primary">

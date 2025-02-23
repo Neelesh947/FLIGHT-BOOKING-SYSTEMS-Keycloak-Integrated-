@@ -1,1 +1,96 @@
-<p>airport-list works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sidebar Layout</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.21/angular-material.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <h1 class="admin-title">Airport List</h1>
+    <button mat-raised-button routerLink="#" class="demo-button">
+        Add
+    </button>
+    <div *ngIf="selection.selected.length === 1" class="button-container">
+        <ng-container *ngFor="let a of airports">
+            <ng-container *ngIf="a.id === selection.selected[0].id">
+                <button mat-raised-button [routerLink]="'/navbar/editUser/'+ a.id " class="demo-button" color="accent">
+                    Edit
+                </button>
+                <button *ngIf="a.isEnabled == false" mat-raised-button (click)="activateAirport(a.id)" class="demo-button" color="primary">
+                    Activate
+                </button>
+                <button *ngIf="a.isEnabled == true" mat-raised-button (click)="deactivateAirport(a.id)" class="demo-button" color="warn">
+                    Deactivate
+                </button>
+            </ng-container>        
+        </ng-container>       
+    </div>
+
+    <mat-tab-group [(selectedIndex)]="selectedTab" animationDuration="0ms" (selectedIndexChange)="onTabChange($event)">
+        <mat-tab label="All"></mat-tab>
+        <mat-tab label="Active"></mat-tab>
+        <mat-tab label="Inactive"></mat-tab>
+    </mat-tab-group>      
+
+    <!-- Table displaying the Airport data -->
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+         <!-- Select Column -->
+         <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="selectAll($event)" [checked]="isAllSelected()" [indeterminate]="isIndeterminate()"> </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let airport">
+                <mat-checkbox (change)="onSelect($event, airport)" [checked]="selection.isSelected(airport)"> </mat-checkbox>
+            </td>
+        </ng-container>
+
+        <!-- First Name Column -->
+        <ng-container matColumnDef="Airport Name">
+            <th mat-header-cell *matHeaderCellDef> Airport Name </th>
+            <td mat-cell *matCellDef="let airport"> {{ airport.airportName }} </td>
+        </ng-container>
+
+        <!-- Last Name Column -->
+        <ng-container matColumnDef="Location">
+            <th mat-header-cell *matHeaderCellDef> AirPortCode</th>
+            <td mat-cell *matCellDef="let airport"> {{ airport.airportCode }} </td>
+        </ng-container>
+
+        <!-- Phone Number Column -->
+        <ng-container matColumnDef="Airport Code">
+            <th mat-header-cell *matHeaderCellDef> Location</th>
+            <td mat-cell *matCellDef="let airport"> {{ airport.location }} </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="Status">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let airport" [ngClass]="{'active-status': airport.isEnabled, 'inactive-status': !airport.isEnabled}">
+                {{ airport.isEnabled === true ? 'Active' : 'Inactive' }}
+            </td>
+        </ng-container> 
+
+        <!-- Header and Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="pagination-container">
+        <div class="pagination-info">
+          <span style="font-size: 15px; font-weight: bold;"> Total: {{ totalAirportCount }}</span> <!-- Total count of admins -->
+        </div>
+      
+        <mat-paginator [length]="totalAirportCount"
+                       [pageSize]="pageSize"
+                       [pageSizeOptions]="[5, 10, 25, 100]"
+                       (page)="pageChanged($event)"
+                       aria-label="Select page">
+        </mat-paginator>
+      </div>      
+</div>
+</body>
+</html>

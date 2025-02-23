@@ -12,6 +12,7 @@ import { EditFlightOperationManagerComponent } from './admin/edit-flight-operati
 import { AddUserComponent } from './flightOperationManager/user/add-user/add-user.component';
 import { EditUserComponent } from './flightOperationManager/user/edit-user/edit-user.component';
 import { UserListComponent } from './flightOperationManager/user/user-list/user-list.component';
+import { AirportListComponent } from './flightOperationManager/Airports/airport-list/airport-list.component';
 
 const routes: Routes = [
   { path: '', 
@@ -60,6 +61,10 @@ const routes: Routes = [
       {
         path:"editUser/:id",
         component:EditUserComponent
+      },
+      {
+        path:"AirportList",
+        component:AirportListComponent
       }
     ]
   },  

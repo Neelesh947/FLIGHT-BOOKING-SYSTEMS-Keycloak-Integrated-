@@ -38,10 +38,10 @@
           <a mat-list-item [routerLink]="'userList'" >User</a>
         </li>
         <li *ngIf="role.includes('flight_operations_manager')">
-          <a mat-list-item  >Flight manage</a>
+          <a mat-list-item  >Flight</a>
         </li>
         <li *ngIf="role.includes('flight_operations_manager')">
-          <a mat-list-item  >Airports</a>
+          <a mat-list-item  [routerLink]="'AirportList'">Airports</a>
         </li>
         <li *ngIf="role.includes('flight_operations_manager')">
           <a mat-list-item  >Travel Agent</a>

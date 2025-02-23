@@ -34,4 +34,9 @@ export class UserService {
   const headers = this.getAuthHeaders();
     return this.http.get("http://localhost:8082/dev/user", {params , headers});
   }
+
+  //create users
+  public createUser(userData:any){
+    return this.http.post("http://localhost:8081/dev/user", userData);
+  }
 }
