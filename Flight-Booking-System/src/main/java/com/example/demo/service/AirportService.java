@@ -17,4 +17,10 @@ public interface AirportService {
 
 	String updateAirportsStatus(Map<String, Object> status, String airportId, String flightManagerId, String realm);
 
+	String deleteAirportById(String airportId, String flightManagerId, String realm);
+
+	Airport updateAirport(String airportId, Airport airport, String flightManagerId, String realm);
+
+	Airport getAirportById(String airportId, String flightManagerId, String realm);
+
 }

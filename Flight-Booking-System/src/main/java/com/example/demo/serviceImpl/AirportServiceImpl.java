@@ -157,7 +157,9 @@ public class AirportServiceImpl implements AirportService{
 		return list;
 	}
 
-	
+	/**
+	 * Update airport status: - active or inactive
+	 */
 	public String updateAirportsStatus(Map<String, Object> status, String airportId, String flightManagerId, 
 			String realm) {
 		Airport airportBody = airportRepository.findById(airportId)
@@ -166,5 +168,48 @@ public class AirportServiceImpl implements AirportService{
 		airportBody.setEnabled(noStatus);
 		airportRepository.save(airportBody);
 		return Constants.TRUE;
+	}
+
+	/**
+	 * delete airport by Id
+	 */
+	public String deleteAirportById(String airportId, String flightManagerId, String realm) {
+		Optional<Airport> airport = airportRepository.findById(airportId);
+		if(airport.isPresent()) {
+			airportRepository.deleteById(airportId);
+			return Constants.TRUE;
+		} else {
+			throw new DataUnavailable(ErrorConstants.NO_DATA_FOUND);
+		}
+	}
+
+	/**
+	 * update airports
+	 */
+	public Airport updateAirport(String airportId, Airport airport, String flightManagerId, String realm) {
+		Airport airportResponse = airportRepository.findById(airportId)
+				.orElseThrow(() -> new DataUnavailable(ErrorConstants.NO_DATA_FOUND)) ;
+		airportResponse.setAirportName(airport.getAirportName());
+		airportResponse.setAirportCode(airport.getAirportCode());
+		airportResponse.setEnabled(airport.isEnabled());
+		airportResponse.setUpdateDateTime(Timestamp.valueOf(LocalDateTime.now()));
+		airportResponse.setLocation(airport.getLocation());
+		airportResponse.setId(airportId);		
+		return airportRepository.save(airportResponse);
+	}
+
+	@Override
+	public Airport getAirportById(String airportId, String flightManagerId, String realm) {
+		List<FlightOperationManagerAndAirportMappings> list = listOfLinkedAirportToFlightManager(flightManagerId);
+		Airport airport = airportRepository.findById(airportId)
+					.orElseThrow(( )-> new DataUnavailable(ErrorConstants.NO_DATA_FOUND));
+		boolean airportExistInFlightManager = list.stream()
+						.anyMatch(mapping -> mapping.getAirportId().equals(airportId));
+		if(airportExistInFlightManager) {
+			return airport;
+		}
+		else {
+			throw new InvalidRequest(ErrorConstants.FLIGHT_MANGER_NOT_LINKED_WITH_AIRPORT);
+		}
 	}
 }

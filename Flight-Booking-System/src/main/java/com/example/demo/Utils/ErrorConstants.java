@@ -43,4 +43,6 @@ public class ErrorConstants {
 	public static final String AIRPORT_NAME_CODE_LOCATION_EXIST = "Airport name, code and location already exists";
 	
 	public static final String AIRPORT_CODE_LOCATION_EXIST = "Airport code and location exist";
+	
+	public static final String FLIGHT_MANGER_NOT_LINKED_WITH_AIRPORT = "This Flight manager is not linked with this Airport";
 }
