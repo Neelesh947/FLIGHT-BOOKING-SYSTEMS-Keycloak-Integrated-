@@ -45,4 +45,12 @@ public class ErrorConstants {
 	public static final String AIRPORT_CODE_LOCATION_EXIST = "Airport code and location exist";
 	
 	public static final String FLIGHT_MANGER_NOT_LINKED_WITH_AIRPORT = "This Flight manager is not linked with this Airport";
+	
+	public static final String UNSUPPORTED_SEAT_CLASS = "Unsupported seat class";
+	
+	public static final String SEAT_NUMBER_ALREADY_PRESENT = "Seat Number Already Present";
+	
+	public static final String SEAT_ROW_LIMIT_REACHED = "Seat row limit reached";
+	
+	public static final String FLIGHT_NOT_FOUND = "Flight not found";
 }

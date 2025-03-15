@@ -13,4 +13,6 @@ public interface AirportRepository extends JpaRepository<Airport, String>{
 	Optional<Airport> findByAirportNameAndAirportCodeAndLocation(String airportname, String airportcode, String location);
 	
 	Optional<Airport> findByAirportCodeAndLocation(String airportCode, String location);
+	
+	Optional<Airport> findByAirportCode(String code);
 }

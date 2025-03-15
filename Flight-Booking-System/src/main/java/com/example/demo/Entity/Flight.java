@@ -1,33 +1,30 @@
 package com.example.demo.Entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import com.example.demo.dto.FlightDto;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-@Data
+@SuppressWarnings("serial")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "flights")
-public class Flight {
-
-	  	@Id
-	    private String flightId; // Primary Key
+public class Flight extends BaseEntity{
 
 	    @Column(nullable = false)
 	    private String airline;
@@ -68,20 +65,5 @@ public class Flight {
 	    @JoinColumn(name = "airport_id")
 	    private Airport airport;
 	    
-	    public FlightDto getFlightDto() {
-	    	FlightDto dto=new FlightDto();
-	    	dto.setFlightId(flightId);
-	    	dto.setAirline(airline);
-	    	dto.setFrom(fromLocation);
-	    	dto.setTo(toLocation);
-	    	dto.setDepartureTime(departureTime);
-	    	dto.setArrivalTime(arrivalTime);
-	    	dto.setAirline(airline);
-	    	dto.setAvailableSeats(availableSeats);
-	    	dto.setPrice(price);
-	    	dto.setSeats(seats);
-	    	dto.setTotalSeat(totalSeat);
-	    	dto.setFlightNumber(flightNumber);
-	    	return dto;
-	    }
+
 }
