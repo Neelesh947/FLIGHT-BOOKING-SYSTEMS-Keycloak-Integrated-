@@ -32,4 +32,15 @@ public class Constants {
 	public static final String IS_ENABLED = "isEnabled";
 	public static final String CREATED_DATE = "createdDate";
 	public static final String UPDATED_DATE = "updated_date";
+	public static final String AIRLINE = "airline";
+	public static final String ARRIVAL_TIME = "arrivalTime";
+	public static final String AVAILABLE_SEAT = "availableSeat";
+	public static final String DEPARTURE_TIME = "departureTime";
+	public static final String FLIGHT_NUMBER = "flightNumber";
+	public static final String FROM_LOCATION = "fromLocation";
+	public static final String TO_LOCATION = "toLocation";
+	public static final String TOTAL_SEAT = "totalSeat";
+	public static final String PRICE = "price";
+	public static final String AIRPORT = "airport";
+	public static final String FLIGHT_DELETED_SUCCESSFULLY = "Flight deleted successfully";
 }

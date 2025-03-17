@@ -2,6 +2,8 @@ package com.example.demo.Entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
@@ -25,6 +27,7 @@ public class Airport extends BaseEntity{
 	private String location;
 	
 	@OneToMany(mappedBy = "airport", fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private List<Flight> flight;
 	
 	private boolean isEnabled;

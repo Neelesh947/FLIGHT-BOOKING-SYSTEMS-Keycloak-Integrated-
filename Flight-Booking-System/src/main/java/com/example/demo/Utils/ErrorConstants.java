@@ -53,4 +53,8 @@ public class ErrorConstants {
 	public static final String SEAT_ROW_LIMIT_REACHED = "Seat row limit reached";
 	
 	public static final String FLIGHT_NOT_FOUND = "Flight not found";
+	
+	public static final String UNAUTHORIZED_ACCESS_TO_THIS = "Unauthorized access to this";
+	
+	public static final String NO_FLIGHT_FOUND = "No flight found";
 }

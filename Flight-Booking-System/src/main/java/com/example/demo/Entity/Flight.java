@@ -8,6 +8,8 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,6 +49,8 @@ public class Flight extends BaseEntity{
 	    @Column(nullable = false)
 	    private double price;
 	    
+	    private boolean isEnabled;
+	    
 	    
 	    @Column(nullable = false)
 	    private int totalSeat; 
@@ -63,6 +67,7 @@ public class Flight extends BaseEntity{
 	    
 	    @ManyToOne
 	    @JoinColumn(name = "airport_id")
+	    @JsonBackReference
 	    private Airport airport;
 	    
 
